@@ -16,6 +16,10 @@ h2{
     text-align: center;
     font-family: "Montserrat";
 }
+h3{
+  text-align: center;
+  font-family: "Montserrat";
+}
 /* block styling */  
 body > div{
     border: 5px solid black;
