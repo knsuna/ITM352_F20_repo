@@ -1,0 +1,48 @@
+h1{
+    font-family: "Oswald";
+    color: yellow;
+}
+h2{
+    font-family: "Oswald";
+    color: yellow;
+}
+body{
+    font-family: "Open Sans";
+    margin-top:10;
+    margin-bottom:10;
+    margin-right:50;
+    margin-left:50;
+    width:950;
+    background-color:black;
+    color: yellow;
+}
+img{
+    float:left
+}
+.right{
+    float:right;
+    width:300;
+    padding:10;
+}
+.left{
+    float:left;
+    width:300;
+    padding:10;
+}
+.middle{
+    margin-right:300;
+    margin-left:300;
+    padding:10;
+}
+ul{
+    list-style-type:none;
+    margin:0;
+    padding:0;
+}
+li {
+    display:inline
+}
+#navbar a {
+    margin-left:25;
+    margin-right:50;
+}
