@@ -14,18 +14,22 @@
         var full_name = first_name + ' ' + middle_name +' ' + last_name;
         var formatted_name = full_name + '</br>' + first_name[0] + '.' + last_name[0] + '.' + middle_name[0];
         var modified_name= '<b></br>' + first_name + '</b>'+'<i></br>' + middle_name + '</i>'+'</br><font size="500px">' + last_name +'</font>';
+        var number= 0.0413*500;
+        var rounded_number= number.toFixed(2);
         document.write(formatted_name);
         document.write(modified_name);
+
     </script>
     <div id="ageDiv">
-        
 
     </div>
+    <div id="tax"></div>
 </body>
 </html>
     <script>
         var stupid;
         age=19;
         var numberOfKids = 2;
-        document.getElementById("ageDiv").innerHTML="I want " +numberOfKids*stupid+ " kids!";
+        document.getElementById("ageDiv").innerHTML="I want " +numberOfKids*age+ " kids!";
+        document.getElementById("tax").innerHTML="The tax on "+full_name+"'s bill is "+rounded_number+""
     </script>       
