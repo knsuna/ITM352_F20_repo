@@ -1,0 +1,1 @@
+console.log(age > 19) && (age < 25);
