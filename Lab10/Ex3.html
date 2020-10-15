@@ -1,0 +1,30 @@
+<body>
+    <table id="invoiceTable" border="2">
+        <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>price</th>
+            <th>extended price</th>
+        </tr>
+        <script>product1 = { 'name': 'small gumball', 'price': 0.02 };
+            product2 = { 'name': 'medium gumball', 'price': 0.05 };
+            product3 = { 'name': 'large gumball', 'price': 0.07 };
+
+            // array of all products
+            products = [product1, product2, product3];
+            cart_quantities = [2, 0, 4];
+            // item row 1
+            for (i = 0; i < cart_quantities.length; i++) {
+                document.write(`
+   <tr>
+        <td width="43%">${i + 1}</td>
+        <td alight="center" width="11%">${cart_quantities[i]}</td>
+        <td width="43%">$${products[i].price}</td>
+        <td width="43%">$${products[i].price*cart_quantities[i]}</td>
+   </tr>
+   `)
+            }
+        </script>
+
+    </table>
+</body>
