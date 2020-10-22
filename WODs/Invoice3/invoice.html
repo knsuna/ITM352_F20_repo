@@ -1,35 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script>
-     // Product 1
-     var item1 = 'Computer';
-     var quantity1 = 2;
-     var price1 = 999.99;
-     // Product 2
-     var item2 = 'PS5';
-     var quantity2 = 12;
-     var price2 = 399.99;
-     // Product 3
-     var item3 = 'XBOX';
-     var quantity3 = 4;
-     var price3 = 299.99;     
-     // Product 4
-     var item4 = 'Nintendo Switch';
-     var quantity4 = 10;
-     var price4 = 299.99; 
-     // Product 5
-     var item5 = 'PS4';
-     var quantity5 = 2;
-     var price5 = 199.99;         
-     //Subtotal
-     var subtotal= 0;
+        // Product 1
+        var item1 = 'Computer';
+        var quantity1 = 2;
+        var price1 = 999.99;
+        // Product 2
+        var item2 = 'PS5';
+        var quantity2 = 12;
+        var price2 = 399.99;
+        // Product 3
+        var item3 = 'XBOX';
+        var quantity3 = 4;
+        var price3 = 299.99;
+        // Product 4
+        var item4 = 'Nintendo Switch';
+        var quantity4 = 10;
+        var price4 = 299.99;
+        // Product 5
+        var item5 = 'PS4';
+        var quantity5 = 2;
+        var price5 = 199.99;
+        //Subtotal
+        var subtotal = 0;
 
     </script>
 </head>
+
 <body>
     <table id="invoiceTable" border="2">
         <tr>
@@ -40,85 +42,95 @@
         </tr>
 
 
-    <script>
-   extended_price = quantity1 * price1;
-   subtotal = subtotal + extended_price;
-   // item row 1
+        <script>
+            extended_price = quantity1 * price1;
+            subtotal = subtotal + extended_price;
+            // item row 1
 
-   var row = invoiceTable.insertRow();
-   row.insertCell().innerHTML = item1; 
-   row.insertCell().innerHTML = quantity1;
-   row.insertCell().innerHTML ='$'+ price1.toFixed(2);
-   row.insertCell().innerHTML ='$'+ extended_price;
+            var row = invoiceTable.insertRow();
+            row.insertCell().innerHTML = item1;
+            row.insertCell().innerHTML = quantity1;
+            row.insertCell().innerHTML = '$' + price1.toFixed(2);
+            row.insertCell().innerHTML = '$' + extended_price;
 
-   extended_price = quantity2 * price2;
-   subtotal = subtotal + extended_price;
-   // item row 2
+            extended_price = quantity2 * price2;
+            subtotal = subtotal + extended_price;
+            // item row 2
 
-   var row = invoiceTable.insertRow();
-   row.insertCell().innerHTML = item2; 
-   row.insertCell().innerHTML = quantity2;
-   row.insertCell().innerHTML ='$'+ price2.toFixed(2);
-   row.insertCell().innerHTML ='$'+ extended_price;
+            var row = invoiceTable.insertRow();
+            row.insertCell().innerHTML = item2;
+            row.insertCell().innerHTML = quantity2;
+            row.insertCell().innerHTML = '$' + price2.toFixed(2);
+            row.insertCell().innerHTML = '$' + extended_price;
 
-   extended_price = quantity3 * price3;
-   subtotal = subtotal + extended_price;
-   // item row 3
+            extended_price = quantity3 * price3;
+            subtotal = subtotal + extended_price;
+            // item row 3
 
-   var row = invoiceTable.insertRow();
-   row.insertCell().innerHTML = item3; 
-   row.insertCell().innerHTML = quantity3;
-   row.insertCell().innerHTML ='$'+ price3.toFixed(2);
-   row.insertCell().innerHTML ='$'+ extended_price;
+            var row = invoiceTable.insertRow();
+            row.insertCell().innerHTML = item3;
+            row.insertCell().innerHTML = quantity3;
+            row.insertCell().innerHTML = '$' + price3.toFixed(2);
+            row.insertCell().innerHTML = '$' + extended_price;
 
-   extended_price = quantity4 * price4;
-   subtotal = subtotal + extended_price;
-   // item row 4
-   var row = invoiceTable.insertRow();
-   row.insertCell().innerHTML = item4; 
-   row.insertCell().innerHTML = quantity4;
-   row.insertCell().innerHTML ='$'+ price4.toFixed(2);
-   row.insertCell().innerHTML ='$'+ extended_price;
+            extended_price = quantity4 * price4;
+            subtotal = subtotal + extended_price;
+            // item row 4
+            var row = invoiceTable.insertRow();
+            row.insertCell().innerHTML = item4;
+            row.insertCell().innerHTML = quantity4;
+            row.insertCell().innerHTML = '$' + price4.toFixed(2);
+            row.insertCell().innerHTML = '$' + extended_price;
 
-   extended_price = quantity5 * price5;
-   subtotal = subtotal + extended_price;
-   // item row 5
-   var row = invoiceTable.insertRow();
-   row.insertCell().innerHTML = item5; 
-   row.insertCell().innerHTML = quantity5;
-   row.insertCell().innerHTML ='$'+ price5.toFixed(2);
-   row.insertCell().innerHTML ='$'+ extended_price;
-    
-    </script>
-<tr>
-    <td colspan="4" width="100%">&nbsp;</td>
-</tr>
-<tr>
-    <td style="text-align: center;" colspan="3" width="100%">Tax @ 5.75%</td>
-    <td id="tax"></td>
-</tr>
-<tr>
-    <td style="text-align: center;" colspan="3" width="100%"><b>Total</b></td>
-    <td id="Total"></td>
-</tr>
-<tr>
-    <td style="text-align: center;" colspan="3" width="100%">Sub-Total</td>
-    <td id="subtotal_cell"></td>
-</tr>
+            extended_price = quantity5 * price5;
+            subtotal = subtotal + extended_price;
+            // item row 5
+            var row = invoiceTable.insertRow();
+            row.insertCell().innerHTML = item5;
+            row.insertCell().innerHTML = quantity5;
+            row.insertCell().innerHTML = '$' + price5.toFixed(2);
+            row.insertCell().innerHTML = '$' + extended_price;
 
-<script>
-     //Tax
-     var tax = subtotal * 0.0575;
-     //Grand Total
-     var total = subtotal + tax;
+        </script>
+        <tr>
+            <td colspan="4" width="100%">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="text-align: center;" colspan="3" width="100%">Tax @ 5.75%</td>
+            <td id="tax"></td>
+        </tr>
+        <tr>
+            <td style="text-align: center;" colspan="3" width="100%"><b>Total</b></td>
+            <td id="Total"></td>
+        </tr>
+        <tr>
+            <td style="text-align: center;" colspan="3" width="100%">Sub-Total</td>
+            <td id="subtotal_cell"></td>
+        </tr>
 
-    document.getElementById("tax").innerHTML='$'+tax.toFixed(2);
+        <script>
+            //Shipping
+            if (subtotal < 50) {
+                var shipping = 2;
+            }
+            else if (subtotal < 101) {
+                var shipping = 5;
+            } else {
+                var shipping = .05 * subtotal;
+            }
+            //Tax
+            var tax = subtotal * 0.0575;
+            //Grand Total
+            var total = subtotal + tax;
+            
+            document.getElementById("tax").innerHTML = '$' + tax.toFixed(2);
 
-    document.getElementById("Total").innerHTML='<b>' +'$'+total.toFixed(2)+ '</b>';
+            document.getElementById("Total").innerHTML = '<b>' + '$' + total.toFixed(2) + '</b>';
+            document.getElementById("shipping").innerHTML = '$' + shipping.toFixed(2);
+            document.getElementById("subtotal_cell").innerHTML = '$' + subtotal.toFixed(2);
 
-    document.getElementById("subtotal_cell").innerHTML='$'+subtotal.toFixed(2);
-
-</script>
+        </script>
     </table>
 </body>
+
 </html>
