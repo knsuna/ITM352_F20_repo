@@ -1,4 +1,4 @@
-var day = 4;
+var day = 04;
 var month = "Dec";
 var year = 2000;
 
