@@ -1,6 +1,6 @@
-var day = 04;
-var month = "Dec";
-var year = 2000;
+var day = 14;
+var month = "Jul";
+var year = 1969;
 
 step1 = year % 100;
 step2 = Math.floor(step1 / 4);
