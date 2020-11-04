@@ -1,3 +1,4 @@
+
 //Furniture Store
 var products = [
 {
@@ -30,4 +31,7 @@ var products = [
     "Price": "399.99",
     "Image": "./images/WoodDesk.jpg"
 },
-]
+];
+if(typeof module != 'undefined') {
+    module.exports.products = products;
+  }

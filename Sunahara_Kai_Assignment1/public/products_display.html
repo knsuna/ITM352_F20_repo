@@ -1,0 +1,59 @@
+<html lang="en">
+<script src="./product_data.js" type="text/javascript"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="product-style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <title>Smartphone Products</title>
+</head>
+<script>
+        function isNonNegIntString(string_to_check, returnErrors = false) {
+            /*This function returns true  if string_to_check is a non-negative integer. If returnErrors= true it will return the array of reasons it is not a non-negative integer.
+            */
+            errors = []; // assume no errors at first
+            if (Number(string_to_check) != string_to_check) errors.push('Not a number!'); // Check if string is a number value
+            if (string_to_check < 0) errors.push('Negative value!'); // Check if it is non-negative
+            if (parseInt(string_to_check) != string_to_check) errors.push('Not an integer!'); // Check that it is an integer
+
+            return returnErrors ? errors : (errors.length == 0); 
+        }
+        let params = (new URL(document.location)).searchParams;
+        GET = {}; // GET is equal to the value
+        params.forEach(function (value, key) { GET[key] = value });
+</script>
+
+<body>
+    <header>
+        <h1>Kai's Furniture Store</h1>
+    </header>
+    <a href="index.html">
+        <h2>Home</h2>
+    </a>
+    <h3>Hover Over Images!</h3>
+    <form action="./process_form" method="POST">
+        <div>
+            <main>
+                <script>
+                    for (i = 0; i <= products.length; i++)
+                        document.write(`
+                    <section class="item">
+                    <h2>${products[i]['Type']}</h2>
+                    <p>${products[i]['Price']}</p>
+                    <input type="text" placeholder="0" name="quantity${i}" onkeyup="isNonNegIntString(this);">
+                    <img src= "${products[i]['Image']}">
+                </section>
+    `)
+                </script>
+            </main>
+
+        </div>
+        <input type="submit" name="submit" value="Purchase!">
+    </form>
+    <footer>
+        <h1>Your One Stop Funiture Shop</h1>
+    </footer>
+</body>
+
+</html>
