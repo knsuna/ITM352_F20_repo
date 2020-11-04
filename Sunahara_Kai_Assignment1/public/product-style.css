@@ -1,92 +1,52 @@
-/* General */  
-body{
-    width: 800px; 
-    margin: 0 auto;
-}
-/* Typography */  
-header{
-    text-align: center;
-    font-family: "Montserrat";
-}
-footer{
-    text-align:center;
-    font-family: "Montserrat";
-}
-h2{
-    text-align: center;
-    font-family: "Montserrat";
-}
-h3{
-  text-align: center;
-  font-family: "Montserrat";
-}
-/* block styling */  
-body > div{
-    border: 5px solid black;
-    display: flex;
-}
-/* Form styling */  
-main{
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    background-image: url(Images/phone_globe.jpg);
-    background-repeat: no-repeat;
-    background-position: left;
-    color:white;
-}
-html{
-    background-color: grey;
-}
-/* Styling the products display */ 
-img{
-    width:200px;
-    height: 200px;
-}
-img:hover {
-    box-shadow: 0 0 20px 20px white;
-}
-.container {
-    position: relative;
-    width: 200px;
-  }
-  
-  .pic {
-    opacity: 1;
-    display: block;
-    width: 200px;
-    height: 200px;
-    transition: .5s ease;
-    backface-visibility: hidden;
-  }
-  
-  .middle {
-    transition: .5s ease;
-    opacity: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    text-align: center;
-  }
-.middle:hover{
-    box-shadow: 0 0 10px 10px red
-}
-  .container:hover .image {
-    opacity: 0.3;
-  }
-  
-  .container:hover .middle {
-    opacity: 1;
-  }
-  
-  .text {
-    background-color: black;
-    color: white;
-    font-size: 20px;
-    padding: 16px 32px;
-  }
 
-
-
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 450px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+    
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;} 
+    }
+     img {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: auto;
+  height: auto;
+  display: block;
+  margin-left: 100px;
+  margin-right: auto;
+  width: 50%;
+}
+.quantity {
+  margin-left:auto;
+  margin-right:auto;
+}
+.button{
+  margin-left:100px;
+  margin-right:100px;
+}
+    

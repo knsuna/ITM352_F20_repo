@@ -19,20 +19,20 @@
         function checkQuantityTextbox(purchase_qty) {
             quantity_textbox_message.innerHTML = isNonNegInt(purchase_qty, true).join(" ");
         }
-        function displayPurchase(purchase_qty) {
-            if (isNonNegInt(purchase_qty)) {
-                document.write(`Thank for you for ordering ${purchase_qty} things!`);
-                window.stop();
-            } else {
-                checkQuantityTextbox(purchase_qty);
+            function displayPurchase(purchase_qty) {
+                if (isNonNegInt(purchase_qty)) {
+                    document.write(`Thank for you for ordering ${purchase_qty} things!`);
+                    window.stop();
+                } else {
+                    checkQuantityTextbox(purchase_qty);
+                }
             }
-        }a
 
-        window.onload = function () {
-            if (params.has('quantity_textbox')) {
-                displayPurchase(params.get('quantity_textbox'));
-            }
-        };
+            window.onload = function () {
+                if (params.has('quantity_textbox')) {
+                    displayPurchase(params.get('quantity_textbox'));
+                }
+            };
 
     </script>
 

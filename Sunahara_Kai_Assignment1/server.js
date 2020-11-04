@@ -1,6 +1,5 @@
 var express = require('express');
 var myParser = require("body-parser");
-var fs = require('fs');
 var queryString = require("querystring");
 var data = require('./public/product_data.js');
 var products = data.products;
@@ -19,13 +18,13 @@ app.post("/process_form", function (request, response) {
     /*process_quantity_form(request.body, response);
     response.send(request.body);*/
     let POST = request.body;
-    console.log(POST);
-    var quertyPOST = queryString.stringify(POST);
+    console.log(POST);//check POST array to see if it is pulling the correct thing
+    var quertyPOST = queryString.stringify(POST);//set POST query so that it can be read by invoice
     for(i = 0; products.length;i++) {
     if(isNonNegInt(POST["quantity" + i])){
-        response.redirect(`./invoice.html?` + quertyPOST);
+        response.redirect(`./invoice.html?` + quertyPOST);//send to invoice
     } else {
-        response.redirect(`./products_display.html?`+quertyPOST);
+        response.redirect(`./products_display.html?`+quertyPOST);//send back to product_display
     }
     
 }
