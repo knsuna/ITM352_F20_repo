@@ -1,4 +1,3 @@
-
     /* Remove the navbar's default margin-bottom and rounded borders */ 
     .navbar {
       margin-bottom: 0;
@@ -45,8 +44,29 @@
   margin-left:auto;
   margin-right:auto;
 }
+/*Button colors*/
 .button{
   margin-left:100px;
   margin-right:100px;
+  background-color: black; /* Black */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
 }
-    
+/*Float for purchase button*/
+    #sidebar {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+  background-color: green;
+  border: 2px solid #4CAF50;
+  margin-left:70%;
+}
+.gap{
+  background-color: transparent;
+  position: absolute;
+}

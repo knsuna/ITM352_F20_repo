@@ -13,7 +13,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>Furniture Shop Invoice</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -24,7 +24,7 @@
   <script>
        //subtotal
         var subtotal = 0;
-        //Functin
+        //Function
         function generate_item_rows(product_quantities_array) {
             for (i = 0; i < product_quantities_array.length; i++) {
                 errorrtrn = isNonNegIntString(quantity[i], true);
@@ -58,7 +58,7 @@
 </script>
 </head>
 <body>
-
+<!-- Submit Button with sidebar id for CSS -->
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -77,7 +77,7 @@
         <li><a href="#">Contact</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <li><a href="./login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
       </ul>
     </div>
   </div>
@@ -86,9 +86,9 @@
 <div class="container-fluid text-center">    
   <div class="row content">
     <div class="col-sm-2 sidenav">
-      <p><a href="#">Link</a></p>
-      <p><a href="#">Link</a></p>
-      <p><a href="#">Link</a></p>
+      <p><a href="#"></a></p>
+      <p><a href="#"></a></p>
+      <p><a href="#"></a></p>
     </div>
     <div class="col-sm-8 text-left"> 
         <table id="invoiceTable" border="2">
@@ -149,17 +149,17 @@
     </div>
     <div class="col-sm-2 sidenav">
       <div class="well">
-        <p>ADS</p>
+        <p></p>
       </div>
       <div class="well">
-        <p>ADS</p>
+        <p></p>
       </div>
     </div>
   </div>
 </div>
 
 <footer class="container-fluid text-center">
-  <p>Footer Text</p>
+  <p>Kai's Furniture Shop</p>
 </footer>
 
 </body>

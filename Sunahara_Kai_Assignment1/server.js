@@ -1,11 +1,12 @@
-var express = require('express');
-var myParser = require("body-parser");
-var queryString = require("querystring");
-var data = require('./public/product_data.js');
-var products = data.products;
+var express = require('express');//require express
+var myParser = require("body-parser");//require body parser
+var queryString = require("querystring");//querystring to be used to process the POST to invoice
+var data = require('./public/product_data.js'); //load product_data.js
+var products = data.products; //get data from product_data.js
 
 var app = express();
 
+//check where coming from and request
 app.all('*', function (request, response, next) {
     console.log(request.method + ' to ' + request.path);
     next();
@@ -14,14 +15,15 @@ app.all('*', function (request, response, next) {
 
 app.use(myParser.urlencoded({ extended: true }));
 
+
 app.post("/process_form", function (request, response) {
     /*process_quantity_form(request.body, response);
     response.send(request.body);*/
     let POST = request.body;
     console.log(POST);//check POST array to see if it is pulling the correct thing
-    var quertyPOST = queryString.stringify(POST);//set POST query so that it can be read by invoice
+    var quertyPOST = queryString.stringify(POST);//set POST query so that it can be read by invoice https://www.w3schools.com/Jsref/jsref_stringify.asp
     for(i = 0; products.length;i++) {
-    if(isNonNegInt(POST["quantity" + i])){
+    if(isNonNegInt(POST[`products${i}`])){
         response.redirect(`./invoice.html?` + quertyPOST);//send to invoice
     } else {
         response.redirect(`./products_display.html?`+quertyPOST);//send back to product_display
@@ -29,7 +31,7 @@ app.post("/process_form", function (request, response) {
     
 }
 });
-
+//From Lab 12
 function isNonNegInt(q, returnErrors = false) {
     errors = []; // assume no errors at first
     if (Number(q) != q) errors.push('Not a number!'); // Check if string is a number value
@@ -38,20 +40,5 @@ function isNonNegInt(q, returnErrors = false) {
     return returnErrors ? errors : (errors.length == 0);
 }
 
-/*function process_quantity_form(POST, response) {
-    if (typeof POST['purchase_submit_button'] != 'undefined') {
-        var qString = queryString.stringify(POST);
-        for (i in products) {
-            let q = POST[`quantity${i}`];
-            if (isNonNegInt(q)) {
-                response.redirect(`invoice.html?`+qString) // render template string
-            } else {
-                response.redirect(`product_display.html` + qString);
-            }
-        }
-
-    }
-}
-*/
 app.use(express.static('./public'));
 app.listen(8080, () => console.log(`listening on port 8080`));
