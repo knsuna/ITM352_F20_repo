@@ -1,6 +1,9 @@
+/*
+By Kai Sunahara
+*/
 var express = require('express');//require express
 var myParser = require("body-parser");//require body parser
-var queryString = require("querystring");//querystring to be used to process the POST to invoice
+var queryString = require("querystring");//querystring to be used to process the POST to invoice https://nodejs.org/api/querystring.html
 var data = require('./public/product_data.js'); //load product_data.js
 var products = data.products; //get data from product_data.js
 
