@@ -1,55 +1,44 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
+    <script src="./product_data.js"></script>
     <script>
+        function checkQuantityTextbox() {
+            errors_array = isNonNegInt(quantity_textbox.value, true);
+            qty_textbox_message.innerHTML = errors_array.join(' ');
+        }
+
+        function isNonNegInt(q, returnErrors = false) {
+            errors = []; // assume no errors at first
+            if (Number(q) != q) errors.push('Not a number!'); // Check if string is a number value
+            if (q < 0) errors.push('Negative value!'); // Check if it is non-negative
+            if (parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
+            return returnErrors ? errors : (errors.length == 0);
+        }
+
+        // Get the query string values from form submission
         let params = (new URL(document.location)).searchParams;
-        function isNonNegInt(val, returnErrors = false) {
-            errors = [];
-            if (Number(val) != val) {
-                errors.push('Not a number!');
-            }
-            else {
-                if (val < 0) errors.push('Negative value!');
-                if (parseInt(val) != val) errors.push('Not an integer!');
-            }
-            return returnErrors ? errors : ((errors.length > 0) ? false : true);
-        }
-
-        function checkQuantityTextbox(purchase_qty) {
-            quantity_textbox_message.innerHTML = isNonNegInt(purchase_qty, true).join(" ");
-        }
-        function displayPurchase(purchase_qty) {
-            if (isNonNegInt(purchase_qty)) {
-                document.write(`Thank for you for ordering ${purchase_qty} things!`);
-                window.stop();
-            } else {
-                checkQuantityTextbox(purchase_qty);
-            }
-        }a
-
-        window.onload = function () {
-            if (params.has('quantity_textbox')) {
-                displayPurchase(params.get('quantity_textbox'));
-            }
-        };
-
+        GET = {};
+        params.forEach(function(value, key) {
+            GET[key] = value
+        });
     </script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML Forms</title>
 </head>
 
-<body id="the_body">
-    <form name="quantity_form" action="./process_form" method="POST">
+<body>
+    <script>
+        document.write(`<h3>${products[1]["model"]} at \$${products[1]["price"]}</h3>`);
+    </script>
+    <form name="quantity_form" action="http://localhost:8080/process_form" method="POST">
         <label for="quantity_textbox">quantity desired:</label>
-        <input type="text" name="quantity_textbox">
-        <script>
-            if (params.has('quantity_textbox')) {
-                quantity_form["quantity_textbox"].value = params.get('quantity_textbox');
-            }
-        </script>
-        <span id="quantity_textbox_message">Enter a quantity</span>
+        <input name="quantity_textbox" type="text" onkeyup="checkQuantityTextbox();">
+        <span id='qty_textbox_message'>Enter a quantity</span>
         <br>
-        <input type="submit" name="submit_button" value="Purchase">
+        <input name="purchase_submit" type="submit" value="Purchase">
     </form>
 </body>
 

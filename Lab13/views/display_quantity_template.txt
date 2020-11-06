@@ -1,0 +1,27 @@
+<tr>
+    <th style="text-align: center;" width="43%">Item</th>
+    <th style="text-align: center;" width="11%">quantity</th>
+    <th style="text-align: center;" width="13%">price</th>
+    <th style="text-align: center;" width="54%">extended price</th>
+</tr>
+<script>
+    // Product 1
+    document.write(`
+                <tr>
+                    <td width="43%">${product1.name}</td>
+                    <td align="center" width="11%">${product1.quantity}</td>
+                    <td width="13%">\$${product1.price}</td>
+                    <td width="54%">\$${extended_prices1}</td>
+                </tr>
+                `);
+</script>
+<script>
+    // Product 2
+    document.write(`
+                    <tr>
+                        <td width="43%">${item2}</td>
+                        <td align="center" width="11%">${quantity2}</td>
+                        <td width="13%">\$${price2}</td>
+                        <td width="54%">\$${extended_prices2}</td>
+                    </tr>
+                    `);
