@@ -1,45 +1,93 @@
 /*
 By Kai Sunahara
-Server javascript
 */
 var express = require('express'); //require express
 var myParser = require("body-parser"); //require body parser
-var queryString = require("querystring"); //querystring to be used to process to invoice https://nodejs.org/api/querystring.html (Found from searching the web)
 var data = require('./public/product_data.js'); //load product_data.js
 var products = data.products; //Code from bottom of product_data.js
-var app = express(); //starts express
+var fs = require('fs'); //Code from Lab 13
+var app = express(); //require express
 
-//Starts up myParser
+//starts parser
 app.use(myParser.urlencoded({ extended: true }));
 
-//From Lab 13
+//Taken from Lab 13 **NOTE for some reason, I could not figure out why the IsNonNegInt Function was not working properly. Will need to modify function.
 app.post("/process_form", function (request, response) {
-    let POST = request.body;
-    //console.log(POST); //check POST array to see if it is pulling the correct thing
-    var quertyPOST = queryString.stringify(POST); //set as a query so that it can be read by invoice https://nodejs.org/api/querystring.html
-    for (i in products) {
-        if (isNonNegIntString(POST[`products${i}`])) {
-            response.redirect(`./invoice.html?` + quertyPOST); //send to invoice
-        } else {
-            response.redirect(`./products_display.html?` + quertyPOST); //send back to product_display
+    let POST = request.body; 
+    console.log(POST);
+    var CorrectValue = true; //Values are number,an interger, and not negative
+    var Quantities = false; //Makes sure that there is at least one value
+     for (i in products) {
+        if(isNaN(POST[`quantity${i}`]) == true) { //Runs isNonNegInt function for q
+            CorrectValue = false; //If q is false, set variable to false (quantity is not an int)
         }
 
+        if (POST[`quantity${i}`] > 0) { //If q variable greater than 0
+            Quantities = true; //And item has been purchased, set variable to true
+        }
     }
-});
+    console.log(CorrectValue,Quantities);
 
+    if (CorrectValue && Quantities) {
+        display_invoice_table_rows(POST,response);
+    }else{
+        response.send(`
+        <head>
+        Invalid Data
+        </br>Please Go Back
+        </head>
+        `)
+    } 
 
+    //I used the data that was in the Assignment 1 example. The fs.readFileSync can only be rendered as a text file. Meaning that the js can to be computed in this file before being sent to the txt.
+    var contents = fs.readFileSync('./public/invoice.view', 'utf8');
+    response.send(eval('`' + contents + '`')); // render template string
+    
+    //Taken from Assignment 1 example. 
+    function display_invoice_table_rows() {
+        subtotal = 0;
+        str = '';
+        for (i = 0; i < products.length; i++) {
+            a_qty = 0;
+            if(typeof POST[`quantity${i}`] != 'undefined') {
+                a_qty = POST[`quantity${i}`];
+            }
+            if (a_qty > 0) {
+                // product row
+                extended_price =a_qty * products[i][`Price`]
+                subtotal += extended_price;
+                str += (`
+      <tr>
+        <td width="43%">${products[i][`Type`]}</td>
+        <td align="center" width="11%">${a_qty}</td>
+        <td width="13%">\$${products[i][`Price`]}</td>
+        <td width="54%">\$${extended_price}</td>
+      </tr>
+      `);
+            }
+        }
+        // Compute tax
+        tax_rate = 0.0575;
+        tax = tax_rate * subtotal;
 
-//From Lab 12
-function isNonNegIntString(string_to_check, returnErrors = false) {
-    /*This function returns true  if string_to_check is a non-negative integer. If returnErrors= true it will return the array of reasons it is not a non-negative integer.
-     */
-    errors = []; // assume no errors at first
-    if (Number(string_to_check) != string_to_check) errors.push('Not a number!'); // Check if string is a number value
-    if (string_to_check < 0) errors.push('Negative value!'); // Check if it is non-negative
-    if (parseInt(string_to_check) != string_to_check) errors.push('Not an integer!'); // Check that it is an integer
+        // Compute shipping
+        if (subtotal <= 50) {
+            shipping = 2;
+        }
+        else if (subtotal <= 100) {
+            shipping = 5;
+        }
+        else {
+            shipping = 0.05 * subtotal; // 5% of subtotal
+        }
 
-    return returnErrors ? errors : (errors.length == 0);
-}
+        // Compute grand total
+        total = subtotal + tax + shipping;
+        
+        return str;
+    }
+
+});;
 
 app.use(express.static('./public'));
 app.listen(8080, () => console.log(`listening on port 8080`));

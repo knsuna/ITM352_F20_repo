@@ -1,5 +1,8 @@
+/*
+Furniture Store
+Contains information about each product
+*/
 
-//Furniture Store
 var products = [
 {
     //Regular Sofa, different from Premium items

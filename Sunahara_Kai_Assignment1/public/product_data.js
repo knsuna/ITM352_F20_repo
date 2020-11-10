@@ -1,8 +1,7 @@
-/*
-Furniture Store
-Contains information about each product
-*/
-
+/**
+By Kai Sunahara
+ */
+//Furniture Store
 var products = [
 {
     //Regular Sofa, different from Premium items
@@ -35,6 +34,7 @@ var products = [
     "Image": "./images/WoodDesk.jpg"
 },
 ];
+//from Assignment 1 example
 if(typeof module != 'undefined') {
     module.exports.products = products;
   }
