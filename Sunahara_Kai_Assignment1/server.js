@@ -6,6 +6,7 @@ var myParser = require("body-parser"); //require body parser
 var data = require('./public/product_data.js'); //load product_data.js
 var products = data.products; //Code from bottom of product_data.js
 var fs = require('fs'); //Code from Lab 13
+const { DH_CHECK_P_NOT_SAFE_PRIME } = require('constants');
 var app = express(); //require express
 
 //starts parser
@@ -18,12 +19,9 @@ app.post("/process_form", function (request, response) {
      for (i in products) {  
         var productquantitites = POST[`quantity${i}`];
         var totalproductquantities = productquantitites + totalproductquantities;
-    if (totalproductquantities != "undefined"){
-       console.log()
+    if (totalproductquantities != "undefined"){//checks if the quantites are defined when added together. If it is undefined, it means that there are no values.
+       console.log("Not Undefined")
     }
-    if (isNonNegInt(productquantitites)) {
-        display_invoice_table_rows(POST,response);
-    }     
     else{
         response.send(`
         <head>
@@ -31,9 +29,18 @@ app.post("/process_form", function (request, response) {
         </br>Please Go Back
         </head>
         `)
+    }
+    if (isNonNegInt(productquantitites)) {
+        display_invoice_table_rows(POST,response);
+    }     
+    else {
+        response.send(`
+        <head>
+        Invalid Data
+        </br>Please Go Back
+        </head>
+        `)
       }
-   
-
 
 }
 
