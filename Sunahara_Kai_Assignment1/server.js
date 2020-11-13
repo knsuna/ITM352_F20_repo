@@ -15,29 +15,27 @@ app.use(myParser.urlencoded({ extended: true }));
 app.post("/process_form", function (request, response) {
     let POST = request.body; 
     console.log(POST);
-    var CorrectValue = true; //Values are number,an interger, and not negative
-    var Quantities = false; //Makes sure that there is at least one value
-     for (i in products) {
-        if(isNaN(POST[`quantity${i}`]) == true) { //Runs isNonNegInt function for q
-            CorrectValue = false; //If q is false, set variable to false (quantity is not an int)
-        }
-
-        if (POST[`quantity${i}`] > 0) { //If q variable greater than 0
-            Quantities = true; //And item has been purchased, set variable to true
-        }
+     for (i in products) {  
+        var productquantitites = POST[`quantity${i}`];
+        var totalproductquantities = productquantitites + totalproductquantities;
+    if (totalproductquantities != "undefined"){
+       console.log()
     }
-    console.log(CorrectValue,Quantities);
-
-    if (CorrectValue && Quantities) {
+    if (isNonNegInt(productquantitites)) {
         display_invoice_table_rows(POST,response);
-    }else{
+    }     
+    else{
         response.send(`
         <head>
         Invalid Data
         </br>Please Go Back
         </head>
         `)
-    } 
+      }
+   
+
+
+}
 
     //I used the data that was in the Assignment 1 example. The fs.readFileSync can only be rendered as a text file. Meaning that the js can to be computed in this file before being sent to the txt.
     var contents = fs.readFileSync('./public/invoice.view', 'utf8');
@@ -88,6 +86,17 @@ app.post("/process_form", function (request, response) {
     }
 
 });;
+
+
+function isNonNegInt(q, return_errors = false) {
+    errors = []; // assume no errors at first
+    if (q == '') q = 0; // handle blank inputs as if they are 0
+    if (Number(q) != q) errors.push('<font color="red">Not a number!</font>'); // Check if string is a number value
+    if (q < 0) errors.push('<font color="red">Negative value!</font>'); // Check if it is non-negative
+    if (parseInt(q) != q) errors.push('<font color="red">Not an integer!</font>'); // Check that it is an integer
+    return return_errors ? errors : (errors.length == 0);
+}
+
 
 app.use(express.static('./public'));
 app.listen(8080, () => console.log(`listening on port 8080`));
