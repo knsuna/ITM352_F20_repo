@@ -1,1 +1,2 @@
-{"knsunaha":{"name":"Kai Sunahara","password":"p","email":"knsunaha@hawaii.edu"},"newuser":{"password":"newpass","email":"newuser@user.com"},"a":{"password":"a","email":"test@test.com"},"test":{"password":"test","email":"test@y.com"}}
+{"knsunaha":{"name":"Kai Sunahara","password":"p","email":"knsunaha@hawaii.edu"},
+"newuser":{"password":"newpass","email":"newuser@user.com"}}
