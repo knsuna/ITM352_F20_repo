@@ -7,15 +7,10 @@ var data = require('./public/product_data.js'); //load product_data.js
 var products = data.products; //Code from bottom of product_data.js
 var fs = require('fs'); //Code from Lab 13
 var app = express(); //require express
-const user_data_filename = `user_data.json`;
+var user_data_filename = `user_data.json`;
 
 //starts parser
 app.use(myParser.urlencoded({ extended: true }));
-
-app.all("*", function (request, response, next) {
-    console.log(request.method, request.path);
-    next(); //move on to next code
-});
 
 
 var permanentquantities = {};
@@ -29,23 +24,56 @@ app.post("/process_form", function (request, response) {
         var totalproductquantities = productquantitites + totalproductquantities;
         if (totalproductquantities != "undefined") {//checks if the quantites are defined when added together. If it is undefined, it means that there are no values.
             //console.log("Not Undefined")
-            console.log(`GOod`)
+            console.log(`Defined`)
         }
-        if(isNonNegInt(productquantitites)){
+        else{
+            response.send(`
+            <!DOCTYPE html>
+            <html>
+            <body>
+            <p>Please Enter Valid Quantitites. Click the button below to go back!
+            </p>
+    
+            <button onclick="goBack()">Go Back</button>
+    
+            <script>
+            function goBack() {
+              window.history.back();
+            }
+            </script>
+            
+            </body>
+            </html>
+            `)
+        }
+        if (isNonNegInt(productquantitites)) {
             response.redirect(`/login`)
         }
         else {
             response.send(`
-        <head>
-        Invalid Data
-        </br>Please Go Back
-        </head>
+            <!DOCTYPE html>
+            <html>
+            <body>
+            <p>Please Enter Valid Quantitites. Click the button below to go back!
+            </p>
+    
+            <button onclick="goBack()">Go Back</button>
+    
+            <script>
+            function goBack() {
+              window.history.back();
+            }
+            </script>
+            
+            </body>
+            </html>
         `)
         }
 
     }
 
 });
+
 
 
 //Taken from Lab14. Checks if the login already exists
@@ -67,21 +95,48 @@ app.get("/login", function (request, response) {
 
 app.post("/loginform", function (request, response) {
     // Process login form POST and redirect to logged in page if ok, back to login page if not
-    var username = request.body.username.toLowerCase();
-    // Checks if username exists already USE FOR LOGIN CHECK
+    console.log(request.body);
+    username = request.body.username.toLowerCase();//will recieve username in lowercase ONLY
     if (typeof user_reg_data[username] != 'undefined') {
+        //if username exists, get password 
         if (user_reg_data[username].password == request.body.password) {
-            console.log(permanentquantities);
-            display_invoice_table_rows(permanentquantities,response);
+            console.log(username + ' logged in');
+            var contents = fs.readFileSync('./public/invoice.view', 'utf8');//So that the display_invoice_table_rows will be rendered with invoice.view
+            response.send(eval('`' + contents + '`')); // render template string
+            display_invoice_table_rows(permanentquantities, response);
         } else {
+            //send user back to login
             response.send(`
-            Error
-            `); //REDIRECT to Login HTML
+        <!DOCTYPE html>
+        <html>
+        <body>
+        <p>
+        Invalid Login. 
+        </p>
+        <p>
+        Click the button below to go back!
+        </br><button onclick="goBack()">Go Back</button>
+        </p>
+
+        <p>
+        
+        <form action="/register" action="/register" method="GET">
+        Click the button below to register a new account!</br>
+        <button class="float-left submit-button">Register</button>
+        </form>
+        </p>
+
+        <script>
+        function goBack() {
+          window.history.back();
+        }
+        </script>
+        
+        </body>
+        </html>
+        `)
         }
     }
-//I used the data that was in the Assignment 1 example. The fs.readFileSync can only be rendered as a text file. Meaning that the js can to be computed in this file before being sent to the txt.
-var contents = fs.readFileSync('./public/invoice.view', 'utf8');
-response.send(eval('`' + contents + '`')); // render template string
 
 });
 
@@ -93,26 +148,98 @@ app.get("/register", function (request, response) {
 });
 
 app.post("/register", function (request, response) {
-    // process a simple register form
+    var username = request.body.username.toLowerCase();//to check username
+    var password = request.body.password;//check password
+    var second_password = request.body.secondpassword;
+    if (typeof user_reg_data[username] != 'undefined') {
+        response.send(`
+        <!DOCTYPE html>
+        <html>
+        <body>
+        <p>${request.body.username} already exists. Click the button below to go back!
+        </p>
 
-    //Validate our registration data! Case-sensitive and usernames must be unique, passwords must have a certain length/etc.
+        <button onclick="goBack()">Go Back</button>
 
-    //Data is valid so save new user to our file user.data.json
-    username = request.body.username.toLowerCase(); //get username
-    user_reg_data[username] = {}; //create empty object for array
-    user_reg_data[username].password = request.body.password; //get password from password textbox (the .password looks at password textbox name found in script above, the name="" value is password)
-    user_reg_data[username].email = request.body.email; //get email from email textbox
+        <script>
+        function goBack() {
+          window.history.back();
+        }
+        </script>
+        
+        </body>
+        </html>
+        `)
+    }
+    else {
+        var GoodUsername = true;
+    }
+    if (password != second_password) {
+        response.send(`
+                <!DOCTYPE html>
+        <html>
+        <body>
+        <p>Your passwords ${password} and ${second_password} do not match. Click the button below to go back!
+        </p>
 
-    fs.writeFileSync(user_data_filename, JSON.stringify(user_reg_data)); //This will turn ___ into a string
- 
-    display_invoice_table_rows(permanentquantities,response);
-    //response.send(`${username} registered`);
+        <button onclick="goBack()">Go Back</button>
 
+        <script>
+        function goBack() {
+          window.history.back();
+        }
+        </script>
+        
+        </body>
+        </html>
+        `)
+        
+    }
+    else {
+        var GoodPassword = true;
+    }
+    if(password.length < 6) {
+            response.send(`
+        <!DOCTYPE html>
+        <html>
+        <body>
+        <p>Your password ${password} is smaller than 6 characters. Click the button below to go back!
+        </p>
 
-//I used the data that was in the Assignment 1 example. The fs.readFileSync can only be rendered as a text file. Meaning that the js can to be computed in this file before being sent to the txt.
-var contents = fs.readFileSync('./public/invoice.view', 'utf8');
-response.send(eval('`' + contents + '`')); // render template string
+        <button onclick="goBack()">Go Back</button>
 
+        <script>
+        function goBack() {
+          window.history.back();
+        }
+        </script>
+        
+        </body>
+        </html>
+            `)
+        }
+    else {
+        var GoodLength = true;
+    }
+
+    if (GoodUsername && GoodPassword && GoodLength) {
+        //Validate our registration data! Case-sensitive and usernames must be unique, passwords must have a certain length/etc.
+
+        //Data is valid so save new user to our file user.data.json
+        username = request.body.username.toLowerCase(); //get username
+        user_reg_data[username] = {}; //create empty object for array
+        user_reg_data[username].password = request.body.password; //get password from password textbox (the .password looks at password textbox name found in script above, the name="" value is password)
+        user_reg_data[username].email = request.body.email.toLowerCase(); //get email from email textbox
+
+        fs.writeFileSync(user_data_filename, JSON.stringify(user_reg_data)); //This will turn ___ into a string
+
+        var displayInvoice = true
+    }
+    if (displayInvoice == true) {
+        var contents = fs.readFileSync('./public/invoice.view', 'utf8');//So that the display_invoice_table_rows will be rendered with invoice.view
+        response.send(eval('`' + contents + '`')); // render template string
+        display_invoice_table_rows(permanentquantities, response);
+    }
 
 });
 
@@ -127,6 +254,7 @@ function isNonNegInt(q, return_errors = false) {
 
 //Taken from Assignment 1 example. 
 function display_invoice_table_rows() {
+
     subtotal = 0;
     str = '';
     for (i = 0; i < products.length; i++) {
