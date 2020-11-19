@@ -18,17 +18,21 @@ var permanentquantities = {};//running variable to keep the values from POST
 app.post("/process_form", function (request, response) {
     let POST = request.body;
     permanentquantities = POST;
-    console.log(POST);
+    var TotalQuantity = 0;
+    var NonNegIntQuantity = false;
     for (i in products) {
-        var productquantitites = POST[`quantity${i}`];
-        var totalproductquantities = productquantitites + totalproductquantities;
+        //console.log(POST[`quantity${i}`]);
+        if (typeof POST[`quantity${i}`] != `undefined` ) {//checks if the quantites are defined when added together. If it is undefined, it means that there are no values.
+            IndividualQuantity = POST[`quantity${i}`];
+            TotalQuantity += IndividualQuantity;
+        }    
+       if(isNonNegInt(IndividualQuantity)){
+            NonNegIntQuantity = true;
+       }
     }    
-        if (totalproductquantities != `undefined` ) {//checks if the quantites are defined when added together. If it is undefined, it means that there are no values.
-        console.log(`Defined`)
-         if(isNonNegInt(productquantitites)){
-            return response.redirect(`./login`)
-        }
-        }
+    if(TotalQuantity > 0 && NonNegIntQuantity == true){
+        return response.redirect(`./login`)
+    } 
         else{//sends an alert that will redirect back to process form page
             return response.send(`<script>
             alert("Please enter a quantity in the products form"); 
@@ -36,9 +40,7 @@ app.post("/process_form", function (request, response) {
             
             </script>`);
         }
-       
-    
-
+      
 });
 
 //Taken from Lab14. Checks if the login already exists
@@ -52,11 +54,13 @@ if (fs.existsSync(user_data_filename)) {
 } else {
     console.log(user_data_filename + ' does not exist!');
 }
+
 //The GET request is from the login.view page. Whenver /login is used, they will be sent to login.view
 app.get("/login", function (request, response) {
     var contents = fs.readFileSync('./public/login.view', 'utf8');
     response.send(eval('`' + contents + '`')); // render template string
 });
+
 //The POST request will be redirected to either the invoice or be given a page to retry login/register new account. Partically taken from Lab 14
 app.post("/loginform", function (request, response) {
     // Process login form POST and redirect to logged in page if ok, back to login page if not
@@ -69,10 +73,9 @@ app.post("/loginform", function (request, response) {
             fullname = user_reg_data[username].name;
             var contents = fs.readFileSync('./public/invoice.view', 'utf8'); //So that the display_invoice_table_rows will be rendered with invoice.view
             response.send(eval('`' + contents + '`')); // render template string
-            display_invoice_table_rows(permanentquantities, response); //Invoice is generated with the values from POST
-        } 
-    }else {
-            //send user back to login
+        }
+    } else {
+        //send user back to login
         response.send(`
         <!DOCTYPE html>
         <html>
@@ -101,7 +104,7 @@ app.post("/loginform", function (request, response) {
         
         </body>
         </html>`);
-        }
+    }
 
 });
 
@@ -119,14 +122,14 @@ app.post("/register", function (request, response) {
     var email = request.body.email.toLowerCase();
     var fullname = request.body.fullname;
     //if fullname is greater than 30, display error message
-    if(fullname.length > 30){
+    if (fullname.length > 30) {
         response.send(`<script>
             alert("${fullname} is to long."); 
             window.history.back(); 
             
             </script>`);
     }
-    else{
+    else {
         var GoodName = true;
     }
     //if username is already defined, display error message
@@ -139,21 +142,21 @@ app.post("/register", function (request, response) {
     }
     else {
         var GoodUsername = true;
-    //if username does not meet requirements from validate Username function (using regular expressions to check)
+        //if username does not meet requirements from validate Username function (using regular expressions to check)
     }
-    if (!validateUsername(username)){
-                response.send(`<script>
+    if (!validateUsername(username)) {
+        response.send(`<script>
             alert("Your ${username} is ${username.length} characters long. Please make sure that your password is between 4 and 10 characters."); 
             window.history.back(); 
             
             </script>`);
     }
-    else{
+    else {
         var GoodUsernameLength = true;
     }
     //if password is not the same as second password, display error message
     if (password != second_password) {
-                response.send(`<script>
+        response.send(`<script>
             alert("Your passwords ${password} and ${second_password} do not match."); 
             window.history.back(); 
             
@@ -163,25 +166,25 @@ app.post("/register", function (request, response) {
         var GoodPassword = true;
     }
     //if password is less than 6, display error message
-    if(password.length < 6) {
-            response.send(`<script>
+    if (password.length < 6) {
+        response.send(`<script>
             alert("Your password ${password} is smaller than 6 characters."); 
             window.history.back(); 
             
             </script>`)
-        }
+    }
     else {
         var GoodLength = true;
     }
     //if email does not meet requriments in validate email function, displa error message
-    if(!validateEmail(email)){
-            response.send(`<script>
+    if (!validateEmail(email)) {
+        response.send(`<script>
             alert("Your email ${email} is not valid."); 
             window.history.back(); 
             
             </script>`)
     }
-    else{
+    else {
         var GoodEmail = true;
     }
     //Checks if every variable is true
@@ -191,7 +194,7 @@ app.post("/register", function (request, response) {
         user_reg_data[username].name = request.body.fullname;
         user_reg_data[username].password = request.body.password; //get password from password textbox (the .password looks at password textbox name found in script above, the name="" value is password)
         user_reg_data[username].email = request.body.email.toLowerCase(); //get email from email textbox
-    
+
 
         fs.writeFileSync(user_data_filename, JSON.stringify(user_reg_data)); //This will turn ___ into a string
 
@@ -200,9 +203,8 @@ app.post("/register", function (request, response) {
     if (displayInvoice == true) {
         var contents = fs.readFileSync('./public/invoice.view', 'utf8');//So that the display_invoice_table_rows will be rendered with invoice.view
         response.send(eval('`' + contents + '`')); // render template string
-        display_invoice_table_rows(permanentquantities, response);
     }
-    else{
+    else {
         console.log(`Error message`)
     }
 
@@ -222,11 +224,10 @@ function validateEmail(email) {
     return re.test(String(email).toLowerCase());
 }
 //Taken from an example on the internet. Modified to be between 4-10 characters long.
-function validateUsername(user){
+function validateUsername(user) {
     const re = /^(?=.{4,10}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/;
     return re.test(String(user).toLowerCase());
 }
-
 
 //Taken from Assignment 1 example. 
 function display_invoice_table_rows() {
