@@ -32,13 +32,13 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a style="color:white"><b>${username}</b></a></li>
+                    <li><a style="color:white"><b>${fullname}</b></a></li>
                 </ul>
             </div>
         </div>
     </nav>
     <div class="container-fluid text-center">
-      Welcome ${username}, your reciept will be sent to ${user_reg_data[username].email}.
+      Welcome ${fullname}, your reciept will be sent to ${user_reg_data[username].email}.
         <div class="row content">
             <div class="col-sm-2 sidenav">
                 <p>

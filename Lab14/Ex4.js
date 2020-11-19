@@ -76,19 +76,23 @@ app.get("/register", function (request, response) {
 });
 
 app.post("/register", function (request, response) {
-    // process a simple register form
+    var password = request.body.password;
+    var second_password = request.body.repeat_password;
+    var username = request.body.username;
+    if(typeof users_reg_data[username] == 'undefined') {
+        if(password == second_password){
+            username = request.body.username;
+            users_reg_data[username] = {};
+            users_reg_data[username].password = request.body.password;
+            users_reg_data[username].email = request.body.email;
 
-    // validate registration data
-    
-    // all good; save new user
-    username = request.body.username;
-    users_reg_data[username] = {};
-    users_reg_data[username].password = request.body.password;
-    users_reg_data[username].email = request.body.email;
+            fs.writeFileSync(filename, JSON.stringify(users_reg_data));
+            response.redirect(`./login`)
+        }
 
-    fs.writeFileSync(filename, JSON.stringify(users_reg_data));
-
-    response.send(`${username} registered!`);
+    }else{
+        response.send(`Invalid`);
+    }
 });
 
 app.listen(8080, () => console.log(`listening on port 8080`));
