@@ -22,23 +22,23 @@ app.post("/process_form", function (request, response) {
     for (i in products) {
         //console.log(POST[`quantity${i}`]);
         IndividualQuantity = POST[`quantity${i}`]; //assigns a variable that will be used to add to Total Quantity
-        TotalQuantity += IndividualQuantity;    
-       if(isNonNegInt(IndividualQuantity)){//if isNonNegInt is true, assign this variable as true
+        TotalQuantity += IndividualQuantity;
+        if (isNonNegInt(IndividualQuantity)) {//if isNonNegInt is true, assign this variable as true
             NonNegIntQuantity = true;
-       }
-    }    
-    if(TotalQuantity > 0 && NonNegIntQuantity == true){//checks if there are quantites and checks if NonNegIntQuantity variable is true
-        
+        }
+    }
+    if (TotalQuantity > 0 && NonNegIntQuantity == true) {//checks if there are quantites and checks if NonNegIntQuantity variable is true
+
         return response.redirect(`./login`)
-    } 
-        else{//sends an alert that will redirect back to process form page
-            return response.send(`<script>
+    }
+    else {//sends an alert that will redirect back to process form page
+        return response.send(`<script>
             alert("Please enter a valid quantity in the products form"); 
             window.history.back();
             
             </script>`);
-        }
-      
+    }
+
 });
 
 //Taken from Lab14. Checks to see if user_data.json exists
@@ -119,6 +119,10 @@ app.post("/register", function (request, response) {
     var second_password = request.body.secondpassword;//Assigns second password to variable
     var email = request.body.email.toLowerCase();//Assigns email to variable and converts to only lowercase
     var fullname = request.body.fullname;
+
+    /*NOTE: I made the validation this way beucase I wanted to be able to display the particular error messages for each issue. 
+    Instead of creating some type of function, I wanted the user to be able to see exactly what they were doing wrong by display the issue.
+    */
     //if fullname is greater than 30, display error message
     if (fullname.length > 30) {
         console.log(`Full name is more than 30 characters long`);
@@ -264,7 +268,7 @@ function display_invoice_table_rows() {
       `);
         }
     }
-    
+
     // Compute tax
     tax_rate = 0.0575;
     tax = tax_rate * subtotal;
@@ -286,6 +290,6 @@ function display_invoice_table_rows() {
     return str;
 
 }
-    
+
 app.use(express.static('./public'));
 app.listen(8080, () => console.log(`listening on port 8080`));
