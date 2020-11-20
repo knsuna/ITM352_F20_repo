@@ -38,7 +38,7 @@ Template from ww3 schools
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="./login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    <li></li>
                 </ul>
             </div>
         </div>
@@ -80,14 +80,15 @@ Template from ww3 schools
                             <input type="checkbox" checked="checked" name="remember"> Remember me
                         </label>
                     </div>
+                    </form>
                     <div class="container" style="background-color:#f1f1f1">
-                        <button type="button" class="cancelbtn">Cancel</button>
-                        <span class="psw">Forgot <a href="#">password?</a></span>
-                    </div>
-                </form>
-                        <form action="/register" action="/register" method="GET">
+                        <button type="button" class="cancelbtn" onclick="window.history.back()" >Cancel</button>
+                        <form action="/register" method="GET">
                             <button class="float-left submit-button">Register</button>
                         </form>
+                    </div>
+                
+
                 </p>
             </div>
             <div class="col-sm-2 sidenav">

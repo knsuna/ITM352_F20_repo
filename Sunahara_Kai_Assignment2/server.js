@@ -12,30 +12,28 @@ var user_data_filename = `user_data.json`;
 //starts parser
 app.use(myParser.urlencoded({ extended: true }));
 
-
 var permanentquantities = {};//running variable to keep the values from POST
 //Taken from Lab 13 **NOTE for some reason, I could not figure out why the IsNonNegInt Function was not working properly. Will need to modify function.
 app.post("/process_form", function (request, response) {
     let POST = request.body;
-    permanentquantities = POST;
-    var TotalQuantity = 0;
-    var NonNegIntQuantity = false;
+    permanentquantities = POST;//assignes POST to permanent quantities to be used later when recalling the quantities for invoice
+    var TotalQuantity = 0;//assigns total quantity 0, if there are quantitites, the values will be added here
+    var NonNegIntQuantity = false;//assign variable to false and will be changed to true if it meets IsNonNegInt requirements
     for (i in products) {
         //console.log(POST[`quantity${i}`]);
-        if (typeof POST[`quantity${i}`] != `undefined` ) {//checks if the quantites are defined when added together. If it is undefined, it means that there are no values.
-            IndividualQuantity = POST[`quantity${i}`];
-            TotalQuantity += IndividualQuantity;
-        }    
-       if(isNonNegInt(IndividualQuantity)){
+        IndividualQuantity = POST[`quantity${i}`]; //assigns a variable that will be used to add to Total Quantity
+        TotalQuantity += IndividualQuantity;    
+       if(isNonNegInt(IndividualQuantity)){//if isNonNegInt is true, assign this variable as true
             NonNegIntQuantity = true;
        }
     }    
-    if(TotalQuantity > 0 && NonNegIntQuantity == true){
+    if(TotalQuantity > 0 && NonNegIntQuantity == true){//checks if there are quantites and checks if NonNegIntQuantity variable is true
+        
         return response.redirect(`./login`)
     } 
         else{//sends an alert that will redirect back to process form page
             return response.send(`<script>
-            alert("Please enter a quantity in the products form"); 
+            alert("Please enter a valid quantity in the products form"); 
             window.history.back();
             
             </script>`);
@@ -43,16 +41,16 @@ app.post("/process_form", function (request, response) {
       
 });
 
-//Taken from Lab14. Checks if the login already exists
+//Taken from Lab14. Checks to see if user_data.json exists
 if (fs.existsSync(user_data_filename)) {
     data = fs.readFileSync(user_data_filename, 'utf-8');
     stats = fs.statSync(user_data_filename)
     var user_reg_data = JSON.parse(data); // Takes a string and converts it into object or array    
     console.log(user_data_filename + ' has ' + stats.size + ' characters');
 
-    console.log(user_reg_data);
+    console.log(user_reg_data);//Displays register users in user_data.json
 } else {
-    console.log(user_data_filename + ' does not exist!');
+    console.log(user_data_filename + ' does not exist!');//Displays warning if user_data.json is missing
 }
 
 //The GET request is from the login.view page. Whenver /login is used, they will be sent to login.view
@@ -75,7 +73,7 @@ app.post("/loginform", function (request, response) {
             response.send(eval('`' + contents + '`')); // render template string
         }
     } else {
-        //send user back to login
+        //Option to go back and retry login, or register a new account
         response.send(`
         <!DOCTYPE html>
         <html>
@@ -116,15 +114,16 @@ app.get("/register", function (request, response) {
 });
 //When the POST /register is recieved it will begin the process to register new account
 app.post("/register", function (request, response) {
-    var username = request.body.username;//to check username
-    var password = request.body.password;//check password
-    var second_password = request.body.secondpassword;
-    var email = request.body.email.toLowerCase();
+    var username = request.body.username;//Assigns username to variable
+    var password = request.body.password;//Assigns password to variable
+    var second_password = request.body.secondpassword;//Assigns second password to variable
+    var email = request.body.email.toLowerCase();//Assigns email to variable and converts to only lowercase
     var fullname = request.body.fullname;
     //if fullname is greater than 30, display error message
     if (fullname.length > 30) {
+        console.log(`Full name is more than 30 characters long`);
         response.send(`<script>
-            alert("${fullname} is to long."); 
+            alert("${fullname} is more than 30 characters long."); 
             window.history.back(); 
             
             </script>`);
@@ -134,6 +133,7 @@ app.post("/register", function (request, response) {
     }
     //if username is already defined, display error message
     if ((typeof user_reg_data[username] != 'undefined')) {
+        console.log(`The username requested already exists`);
         response.send(`<script>
             alert("${username} already exists."); 
             window.history.back(); 
@@ -145,8 +145,9 @@ app.post("/register", function (request, response) {
         //if username does not meet requirements from validate Username function (using regular expressions to check)
     }
     if (!validateUsername(username)) {
+        console.log(`The username is to long or contains characters other than numbers and letters.`);
         response.send(`<script>
-            alert("Your ${username} is ${username.length} characters long. Please make sure that your password is between 4 and 10 characters."); 
+            alert("Your username:${username} is invalid. Please make sure that your password is between 4 and 10 characters and only contains number and letters."); 
             window.history.back(); 
             
             </script>`);
@@ -156,17 +157,19 @@ app.post("/register", function (request, response) {
     }
     //if password is not the same as second password, display error message
     if (password != second_password) {
+        console.log(`Passwords do not match`);
         response.send(`<script>
             alert("Your passwords ${password} and ${second_password} do not match."); 
             window.history.back(); 
             
-            </script>`)
+            </script>`);
     }
     else {
         var GoodPassword = true;
     }
     //if password is less than 6, display error message
     if (password.length < 6) {
+        console.log(`Password is smaller than 6 characters`)
         response.send(`<script>
             alert("Your password ${password} is smaller than 6 characters."); 
             window.history.back(); 
@@ -178,6 +181,7 @@ app.post("/register", function (request, response) {
     }
     //if email does not meet requriments in validate email function, displa error message
     if (!validateEmail(email)) {
+        console.log(`Email is invalid. Email must only contain letters, numbers, "_", and ".". Domains must be only three characters long.`)
         response.send(`<script>
             alert("Your email ${email} is not valid."); 
             window.history.back(); 
@@ -189,23 +193,22 @@ app.post("/register", function (request, response) {
     }
     //Checks if every variable is true
     if (GoodUsername && GoodPassword && GoodLength && GoodEmail && GoodUsernameLength && GoodName) {
-        username = request.body.username.toLowerCase(); //get username
-        user_reg_data[username] = {}; //create empty object for array
-        user_reg_data[username].name = request.body.fullname;
-        user_reg_data[username].password = request.body.password; //get password from password textbox (the .password looks at password textbox name found in script above, the name="" value is password)
-        user_reg_data[username].email = request.body.email.toLowerCase(); //get email from email textbox
-
+        console.log(`Valid registration`)
+        username = request.body.username.toLowerCase(); //get username in lowercase
+        user_reg_data[username] = {}; //create empty object for array with username
+        user_reg_data[username].name = request.body.fullname; //Assigns full name to new object
+        user_reg_data[username].password = request.body.password; //Assigns password to new object
+        user_reg_data[username].email = request.body.email.toLowerCase(); //Assigns email to new object
 
         fs.writeFileSync(user_data_filename, JSON.stringify(user_reg_data)); //This will turn ___ into a string
+
 
         var displayInvoice = true
     }
     if (displayInvoice == true) {
+        console.log(`Redirecting to invoice`)
         var contents = fs.readFileSync('./public/invoice.view', 'utf8');//So that the display_invoice_table_rows will be rendered with invoice.view
         response.send(eval('`' + contents + '`')); // render template string
-    }
-    else {
-        console.log(`Error message`)
     }
 
 });
@@ -218,14 +221,22 @@ function isNonNegInt(q, return_errors = false) {
     if (parseInt(q) != q) errors.push('<font color="red">Not an integer!</font>'); // Check that it is an integer
     return return_errors ? errors : (errors.length == 0);
 }
-//Taken from an example on the internet. It takes the format from a regular expresion to validate emails
-function validateEmail(email) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+//Taken from an example on the internet. It takes the format from a regular expresion to validate emails. 
+/*
+Regular Expression Template: For the most part, I was able to following this format when creating the regular expressions for username and email.
+[a-z] lower case letters
+[A-Z] upper case letters
+[0-9] all numbers
+List individuals characters in same box
+{,} used to define character length
+*/
+function validateEmail(email) {//used =@ and +\. to seperate sections of email
+    const re = /^[a-zA-Z0-9._]+@[a-zA-Z0-9.]+\.[a-z]{2,3}$/;
     return re.test(String(email).toLowerCase());
 }
-//Taken from an example on the internet. Modified to be between 4-10 characters long.
+//Modified to be between 4-10 characters long.
 function validateUsername(user) {
-    const re = /^(?=.{4,10}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/;
+    const re = /^[a-zA-Z0-9]{4,10}$/;
     return re.test(String(user).toLowerCase());
 }
 
@@ -253,19 +264,20 @@ function display_invoice_table_rows() {
       `);
         }
     }
+    
     // Compute tax
     tax_rate = 0.0575;
     tax = tax_rate * subtotal;
 
     // Compute shipping
-    if (subtotal <= 50) {
-        shipping = 2;
+    if (subtotal <= 99.99) {
+        shipping = 10;
     }
-    else if (subtotal <= 100) {
-        shipping = 5;
+    else if (subtotal <= 299.99) {
+        shipping = 20;
     }
     else {
-        shipping = 0.05 * subtotal; // 5% of subtotal
+        shipping = 0.15 * subtotal; // 5% of subtotal
     }
 
     // Compute grand total
@@ -274,6 +286,6 @@ function display_invoice_table_rows() {
     return str;
 
 }
-
+    
 app.use(express.static('./public'));
 app.listen(8080, () => console.log(`listening on port 8080`));
