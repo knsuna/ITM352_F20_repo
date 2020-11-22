@@ -7,7 +7,7 @@ Template from ww3 schools
 <html lang="en">
 
 <head>
-    <title>Login</title>
+    <title>Registration</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -65,7 +65,7 @@ Template from ww3 schools
                 <p>
                 <form action="./register" method="post">
                     <div class="imgcontainer">
-                        <img src="./images/avatar.jpg" alt="Avatar" class="avatar">
+                        <img class="displayimage" src="./images/avatar.jpg" alt="Avatar" class="avatar">
                     </div>
 
                     <div class="container">

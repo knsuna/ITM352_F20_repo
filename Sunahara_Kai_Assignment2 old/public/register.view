@@ -58,37 +58,41 @@ Template from ww3 schools
                 </p>
             </div>
             <div class="col-sm-8 text-left">
-                <h1>Welcome to the Login</h1>
+                <h1>Welcome to the Registration</h1>
                 <p></p>
                 <hr>
                 <h3>Enter Credentials</h3>
                 <p>
-                <form action="/loginform" method="post">
+                <form action="./register" method="post">
                     <div class="imgcontainer">
-                        <img class="displayimage" src="./images/avatar.jpg" alt="Avatar" class="avatar">
+                        <img src="./images/avatar.jpg" alt="Avatar" class="avatar">
                     </div>
 
                     <div class="container">
+                        <label for="fullname"><b>Full Name</b></label>
+                        <input type="text" placeholder="Enter Full Name" name="fullname" required>
+
                         <label for="uname"><b>Username</b></label>
                         <input type="text" placeholder="Enter Username" name="username" required>
 
                         <label for="psw"><b>Password</b></label>
-                        <input type="password" placeholder="Enter Password" name="password" required>
+                        <input type="password" placeholder="Enter Password" name="secondpassword" required>
 
-                        <button type="submit">Login</button>
+                        <label for="psw"><b>Re-Enter Password</b></label>
+                        <input type="password" placeholder="Re-Enter Password" name="password" required>
+
+                        <label for="email"><b>Enter Email</b></label>
+                        <input type="email" placeholder="Enter Email" name="email" required>
+
+                        <button type="submit">Register</button>
                         <label>
                             <input type="checkbox" checked="checked" name="remember"> Remember me
                         </label>
                     </div>
+                    <div class="container" style="background-color:#f1f1f1">
+                        <button type="button" class="cancelbtn" onclick="window.history.back()">Cancel</button>
+                    </div>
                 </form>
-                <div class="container" style="background-color:#f1f1f1">
-                    <button type="button" class="cancelbtn" onclick="window.history.back()">Cancel</button>
-                    <form action="/register" method="GET">
-                        <button class="float-left submit-button">Register</button>
-                    </form>
-                </div>
-
-
                 </p>
             </div>
             <div class="col-sm-2 sidenav">

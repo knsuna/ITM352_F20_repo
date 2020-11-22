@@ -135,7 +135,7 @@ app.post("/register", function (request, response) {
     if (!validateUsername(username)) {
         console.log(`The username is to long or contains characters other than numbers and letters.`);
         response.send(`<script>
-            alert("Your username:${username} is invalid. Please make sure that your password is between 4 and 10 characters (currently at ${username.length}) and only contains number and letters."); 
+            alert("Your username:${username} is invalid. Please make sure that your password is between 4 and 10 characters and only contains number and letters."); 
             window.history.back(); 
             
             </script>`);
@@ -242,12 +242,10 @@ function display_invoice_table_rows() {
       <tr>
         <td width="43%">${products[i][`Type`]}</td>
         <td align="center" width="11%">${a_qty}</td>
-        <td align="center">\$${products[i].Price}</td>
-        <td align="right">\$${extended_price.toFixed(2)}</td>
+        <td width="13%">\$${products[i].Price}</td>
+        <td width="54%">\$${extended_price.toFixed(2)}</td>
       </tr>
-
       `);
-      
         }
     }
 
@@ -272,7 +270,6 @@ function display_invoice_table_rows() {
     return str;
 
 }
-
 
 app.use(express.static('./public'));
 app.listen(8080, () => console.log(`listening on port 8080`));
