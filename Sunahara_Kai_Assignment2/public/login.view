@@ -65,7 +65,7 @@ Template from ww3 schools
                 <p>
                 <form action="/loginform" method="post">
                     <div class="imgcontainer">
-                        <img class="displayimage" src="./images/avatar.jpg" alt="Avatar" class="avatar">
+                        <img class="displayimage" src="./images/Logo.png" alt="Avatar" class="avatar">
                     </div>
 
                     <div class="container">
