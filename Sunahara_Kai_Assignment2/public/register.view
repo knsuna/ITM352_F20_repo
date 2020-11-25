@@ -1,7 +1,6 @@
 <!-- 
 By: Kai Sunahara
-Template for Login from ww3 schools
-Template from ww3 schools
+Template for Registration from ww3 schools
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -65,7 +64,7 @@ Template from ww3 schools
                 <p>
                 <form action="./register" method="post">
                     <div class="imgcontainer">
-                        <img class="displayimage" src="./images/logo.png" alt="Avatar" class="avatar">
+                        <img class="displayimage" src="./images/Logo.png" alt="Avatar" class="avatar">
                     </div>
 
                     <div class="container">

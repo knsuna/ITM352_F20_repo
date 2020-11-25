@@ -108,10 +108,10 @@ app.post("/register", function (request, response) {
     Instead of creating some type of function, I wanted the user to be able to see exactly what they were doing wrong by display the issue.
     */
     //if fullname is greater than 30, display error message
-    if (fullname.length > 30) {
+    if (!validatefullname(fullname)) {
         console.log(`Full name is more than 30 characters long`);
         response.send(`<script>
-            alert("${fullname} is more than 30 characters long."); 
+            alert("${fullname} is not valid. Please make sure it contains only letters and is shorter than 30 characters"); 
             window.history.back(); 
             
             </script>`);
@@ -222,6 +222,11 @@ function validateEmail(email) {//used =@ and +\. to seperate sections of email
 function validateUsername(user) {
     const re = /^[a-zA-Z0-9]{4,10}$/;
     return re.test(String(user).toLowerCase());
+}
+
+function validatefullname(fullname){
+    const re = /^[ +a-zA-Z]{0,30}$/
+    return re.test(String(fullname));
 }
 
 //Taken from Assignment 1 example. 

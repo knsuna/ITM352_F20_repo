@@ -1,7 +1,7 @@
 <!-- 
 By: Kai Sunahara
 Template for Invoice from ww3 schools
-Template for invoice taken from bootdey.com. MOdified to allow print function, display correpsonding values, and added logo.
+Template for invoice taken from bootdey.com. Modified to allow print function, display correpsonding values, and added logo.
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +32,7 @@ Template for invoice taken from bootdey.com. MOdified to allow print function, d
 </head>
 
 <body>
-	<!-- Submit Button with sidebar id for CSS -->
+	<!-- template for invoice from bootdey.com. Added a function to print the invoice only. -->
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -183,7 +183,7 @@ Template for invoice taken from bootdey.com. MOdified to allow print function, d
 					</div>
 
 				</div>
-				<!-- END INVOICE -->
+				<!-- End of the invoie function. For the invoice print function. -->
 				<button onclick="printDiv('PrintInvoice')">Print Invoice</button>
 				<b>
 					</br>OUR SHIPPING POLICY IS:A subtotal $0 - $99.99 will be $10 shipping
