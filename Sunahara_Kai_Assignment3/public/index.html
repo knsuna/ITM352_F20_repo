@@ -1,0 +1,95 @@
+<!-- 
+By: Kai Sunahara
+Template from ww3 schools
+Index page/Home page of website
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Furniture Home</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="product-style.css">
+    <script src="./functions.js"></script> 
+    <script>
+    var products_data;
+    loadJSON('get_products_data', function(response) {
+         // Parsing JSON string into object
+         products_data = JSON.parse(response);
+    });
+    var this_product_key = ''
+    </script>
+</head>
+
+<body>
+    <!-- Submit Button with sidebar id for CSS -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+                <a class="navbar-brand" href="#">Logo</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="./index.html">Home</a></li>
+                    <li>
+                                   <script>
+
+                nav_bar(this_product_key,products_data)
+
+            </script>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid text-center">
+        <div class="row content">
+            <div class="col-sm-2 sidenav">
+                <p>
+                    <a href="#"></a>
+                </p>
+                <p>
+                    <a href="#"></a>
+                </p>
+                <p>
+                    <a href="#"></a>
+                </p>
+            </div>
+            <div class="col-sm-8 text-left">
+                <h1>Welcome to the Furniture Shop</h1>
+                <p></p>
+                <hr>
+                <h3>How to Navigate</h3>
+                <p>Click on the Products page to view our products. You can then purchase these products where you can view your invoice!</p>
+            </div>
+            <div class="col-sm-2 sidenav">
+                <div class="well">
+                    <p></p>
+                </div>
+                <div class="well">
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="container-fluid text-center">
+        <p>Kai's Furniture Shop</p>
+    </footer>
+
+</body>
+
+</html>
