@@ -5,7 +5,8 @@ var express = require('express'); //require express
 var myParser = require("body-parser"); //require body parser
 var products = require('./public/product_data'); //load product_data.json
 var fs = require('fs'); //Code from Lab 13
-var session = require('express-session')
+var session = require('express-session');
+const cookieParser = require('cookie-parser');
 var app = express(); //require express
 var user_data_filename = `user_data.json`;
 
@@ -27,13 +28,29 @@ app.post("/get_products_data", function (request, response) {
 app.get("/add_to_cart", function (request, response) {
     var products_key = request.query['products_key']; // get the product key sent from the form post
     var quantities = request.query['quantities'].map(Number); // Get quantities from the form post and convert strings from form post to numbers
-    request.session.cart[products_key] = quantities; // store the quantities array in the session cart object with the same products_key. 
-    response.send(`Good`)
+    for (i in quantities){
+        if(isNonNegInt(quantities[i])){
+             request.session.cart[products_key] = quantities; // store the quantities array in the session cart object with the same products_key. 
+            return response.send(`<script>
+            alert("${quantities.length} items have been added to the cart"); 
+            window.history.back(); 
+            
+            </script>`);
+    }else{
+            return response.send(`<script>
+            alert("You have entered an Invalid Quantity"); 
+            window.history.back(); 
+            
+            </script>`);
+    }
+
+    }
 });
 
 app.get("/get_cart", function (request, response) {
-    response.json(request.session.cart);
+response.json(request.session.cart);
 });
+
 var permanentquantities = {};//running variable to keep the values from POST
 //Taken from Lab 13 **NOTE for some reason, I could not figure out why the IsNonNegInt Function was not working properly. Will need to modify function.
 
@@ -50,10 +67,23 @@ if (fs.existsSync(user_data_filename)) {
     console.log(user_data_filename + ' does not exist!');//Displays warning if user_data.json is missing
 }
 
+app.use(cookieParser());
+
 //The GET request is from the login.view page. Whenver /login is used, they will be sent to login.view
 app.get("/login", function (request, response) {
+    username = request.cookies.username
+    //console.log(request.cookies.username)
+    if (typeof user_reg_data[username] != `undefined`){
+        fullname = user_reg_data[username].name;
+        var contents = fs.readFileSync('./public/invoice.view', 'utf8'); //So that the display_invoice_table_rows will be rendered with invoice.view
+        return response.send(eval('`' + contents + '`')); // render template string)
+    }
     var contents = fs.readFileSync('./public/login.view', 'utf8');
-    response.send(eval('`' + contents + '`')); // render template string
+    return response.send(eval('`' + contents + '`')); // render template string
+});
+
+app.get("/logout", function (equest, response) {
+    response.clearCookie("username").send(`Logged out!`);
 });
 
 //The POST request will be redirected to either the invoice or be given a page to retry login/register new account. Partically taken from Lab 14
@@ -64,11 +94,10 @@ app.post("/loginform", function (request, response) {
     if (typeof user_reg_data[username] != 'undefined') {
         //if username exists, get password 
         if ((user_reg_data[username].password == request.body.password) == true) {
-
             console.log(username + ' logged in');
             fullname = user_reg_data[username].name;
-            var contents = fs.readFileSync('./public/invoice.view', 'utf8'); //So that the display_invoice_table_rows will be rendered with invoice.view
-            response.send(eval('`' + contents + '`')); // render template string
+            response.cookie(`username`,username);
+            response.redirect(`./index.html`)
         } else {
             response.send(`<script>
             alert("The password that you have entered is not correct."); 
@@ -194,6 +223,8 @@ app.post("/register", function (request, response) {
 
 });
 
+
+
 function isNonNegInt(q, return_errors = false) {
     errors = []; // assume no errors at first
     if (q == '') q = 0; // handle blank inputs as if they are 0
@@ -274,6 +305,7 @@ function display_invoice_table_rows() {
     return str;
 
 }
+
 app.post("/get_products_data", function (request, response) {
     response.json(products);
 })
