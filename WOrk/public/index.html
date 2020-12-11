@@ -14,15 +14,6 @@ Index page/Home page of website
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="product-style.css">
-    <script src="./functions.js"></script>
-    <script>
-        var products_data;
-        loadJSON('get_products_data', function (response) {
-            // Parsing JSON string into object
-            products_data = JSON.parse(response);
-        });
-        var this_product_key = ''
-    </script>
 </head>
 
 <body>
@@ -31,46 +22,21 @@ Index page/Home page of website
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
                 <a class="navbar-brand" href="#">Logo</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="./index.html">Home</a></li>
+                    <li><a href="./products_display.html">Products</a></li>
                     <li>
-
-                        <div class="dropdown">
-                            <button class="dropbtn">Products</button>
-                            <div class="dropdown-content">
-                                <script>
-                                    nav_bar(this_product_key, products_data)
-                                </script>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        
+                        <a href="#"></a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <script>
-                            var username = getCookie(`username`);
-                            if(username == ""){
-                                document.write(`
-                                <a href="./login"><span class="glyphicon glyphicon-log-in"></span>Login</a>
-                                `)
-                            }else{
-                                document.write(`
-                                <a href="./logout"><span class="glyphicon glyphicon-log-in"></span>Logout</a>
-                                `)
-                            }
-                        </script>
-                    
-                    </li>
                     <li></li>
                 </ul>
             </div>
@@ -95,8 +61,8 @@ Index page/Home page of website
                 <p></p>
                 <hr>
                 <h3>How to Navigate</h3>
-                <p>Click on the Products page to view our products. You can then purchase these products where you can
-                    view your invoice!</p>
+                <p>Click on the Products page to view our products. You can then purchase these products where you can view your invoice!</p>
+                
             </div>
             <div class="col-sm-2 sidenav">
                 <div class="well">

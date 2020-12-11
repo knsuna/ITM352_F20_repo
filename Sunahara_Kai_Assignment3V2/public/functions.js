@@ -39,27 +39,3 @@ function getCookie(cname) {
   }
   return "";
 }
-
-function display_cart(groupname) {
-                                var order_str = '';
-
-                                order_str += `
-            <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="${this_product_key}">`;
-                                for (i = 0; i < products_data.Sofas.length; i++) {
-                                    if(shopping_cart.Sofas[i] == 0 || (typeof shopping_cart.Sofas[i] ==`undefined`)) {
-                                        document.write(``);
-                                    }
-                                    else{
-                                    order_str += `
-
-        <span>${products_data.Sofas[i][`Type`]}</span>
-        <div class="quantity">
-        <INPUT TYPE="number" min=0 placeholder="0" name="quantities[${i}]" value=${shopping_cart.Sofas[i]} >
-      </div>
-         
-                `;
-                                }
-                            }
-                                // this closes the else for the form and table display
-                                document.write(order_str);;
-}

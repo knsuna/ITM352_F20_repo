@@ -152,6 +152,7 @@ Template for invoice taken from bootdey.com. Modified to allow print function, d
 												<tr>
 
 													${display_invoice_table_rows()}
+													
 
 												<tr>
 													<td colspan="2"></td>

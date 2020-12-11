@@ -1,28 +1,20 @@
 <!-- 
 By: Kai Sunahara
+Template for Login from ww3 schools
 Template from ww3 schools
-Index page/Home page of website
- -->
+-->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Furniture Home</title>
+    <title>Login</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="product-style.css">
-    <script src="./functions.js"></script>
-    <script>
-        var products_data;
-        loadJSON('get_products_data', function (response) {
-            // Parsing JSON string into object
-            products_data = JSON.parse(response);
-        });
-        var this_product_key = ''
-    </script>
+</head>
 </head>
 
 <body>
@@ -40,37 +32,12 @@ Index page/Home page of website
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="./index.html">Home</a></li>
+                    <li><a href="./products_display.html">Products</a></li>
                     <li>
-
-                        <div class="dropdown">
-                            <button class="dropbtn">Products</button>
-                            <div class="dropdown-content">
-                                <script>
-                                    nav_bar(this_product_key, products_data)
-                                </script>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        
+                        <a href="#"></a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <script>
-                            var username = getCookie(`username`);
-                            if(username == ""){
-                                document.write(`
-                                <a href="./login"><span class="glyphicon glyphicon-log-in"></span>Login</a>
-                                `)
-                            }else{
-                                document.write(`
-                                <a href="./logout"><span class="glyphicon glyphicon-log-in"></span>Logout</a>
-                                `)
-                            }
-                        </script>
-                    
-                    </li>
                     <li></li>
                 </ul>
             </div>
@@ -91,12 +58,38 @@ Index page/Home page of website
                 </p>
             </div>
             <div class="col-sm-8 text-left">
-                <h1>Welcome to the Furniture Shop</h1>
+                <h1>Welcome to the Login</h1>
                 <p></p>
                 <hr>
-                <h3>How to Navigate</h3>
-                <p>Click on the Products page to view our products. You can then purchase these products where you can
-                    view your invoice!</p>
+                <h3>Enter Credentials</h3>
+                <p>
+                <form action="/loginform" method="post">
+                    <div class="imgcontainer">
+                        <img class="displayimage" src="./images/Logo.png" alt="Avatar" class="avatar">
+                    </div>
+
+                    <div class="container">
+                        <label for="uname"><b>Username</b></label>
+                        <input type="text" placeholder="Enter Username" name="username" required>
+
+                        <label for="psw"><b>Password</b></label>
+                        <input type="password" placeholder="Enter Password" name="password" required>
+
+                        <button type="submit">Login</button>
+                        <label>
+                            <input type="checkbox" checked="checked" name="remember"> Remember me
+                        </label>
+                    </div>
+                </form>
+                <div class="container" style="background-color:#f1f1f1">
+                    <button type="button" class="cancelbtn" onclick="window.history.back()">Cancel</button>
+                    <form action="/register" method="GET">
+                        <button class="float-left submit-button">Register</button>
+                    </form>
+                </div>
+
+
+                </p>
             </div>
             <div class="col-sm-2 sidenav">
                 <div class="well">

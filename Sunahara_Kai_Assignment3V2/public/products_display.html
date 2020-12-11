@@ -25,6 +25,7 @@ Template from ww3 schools
         loadJSON('get_cart', function (response) {
             // Parsing JSON string into object
             shopping_cart = JSON.parse(response);
+            cart = response
             for (pk in shopping_cart) {
                 total += shopping_cart[pk].reduce((a, b) => a + b);
             }
@@ -142,111 +143,41 @@ Template from ww3 schools
                 </form>
             </div>
             <div class="col-sm-2 sidenav">
-                <form action="./add_to_cart" method="GET">
-                    <button>Modify Cart</button>
-                    <div>
-                        <!-- Submit Button with sidebar id for CSS -->
+                <div>
+                    <!-- Submit Button with sidebar id for CSS -->
 
-                        <main>
+                    <main>
 
-  <script>
-                                var order_str = '';
 
-                                order_str += `
-            <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="Sofas">`
-                ;
-                                for (i = 0; i < products_data.Sofas.length; i++) {
-                                    if(shopping_cart.Sofas[i] == 0 || (typeof shopping_cart.Sofas[i] ==`undefined`)) {
-                                        document.write(``);
+                        <script>
+
+
+                            for (products_key in shopping_cart) {
+                                for (i = 0; i < products_data[products_key].length; i++) {
+                                    if (shopping_cart[products_key][i] != 0){
+                                        document.write(`
+                                            <span>${products_data[products_key][i].Type}</span>
+                                            <div id="quantitiesvalue">
+                                            <input type="button" value="-" onclick="minusone()">
+                                            <INPUT TYPE="number" id="${products_data[products_key][i].Type}" min=0 value="${shopping_cart[products_key][i]}">
+                                            <input type="button" value="+" onclick="addone()">
+                                            </div>
+                                            `)
+                                        }
+                                    function addone() {
+                                        document.getElementById(`${products_data[products_key][i].Type}`).stepUp(1);
                                     }
-                                    else{
-                                    order_str += `
-                                    
-        
-        <span>${products_data.Sofas[i][`Type`]}</span>
-        <div class="quantity">
-        <INPUT TYPE="number" min=0 placeholder="0" name="quantities[${i}]" value=${shopping_cart.Sofas[i]} >
-      </div>
-         
-                `;
+                                    function minusone() {
+                                        document.getElementById(`${products_data[products_key][i].Type}`).stepDown(1);
+                                    }
                                 }
                             }
-                                // this closes the else for the form and table display
-                                document.write(order_str);
-                            </script>
-<script>
-                                var order_str = '';
 
-                                order_str += `
-            <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="Tables">`;
-                                for (i = 0; i < products_data.Tables.length; i++) {
-                                    if(shopping_cart.Tables[i] == 0 || (typeof shopping_cart.Tables[i] ==`undefined`)) {
-                                        document.write(``);
-                                    }
-                                    else{
-                                    order_str += `
+                        </script>
+                    </main>
 
-        <span>${products_data.Tables[i][`Type`]}</span>
-        <div class="quantity">
-        <INPUT TYPE="number" min=0 placeholder="0" name="quantities[${i}]" value=${shopping_cart.Tables[i]} >
-      </div>
-         
-                `;
-                                }
-                            }
-                                // this closes the else for the form and table display
-                                document.write(order_str);
-                            </script>
-                            <script>
-                                var order_str = '';
+                </div>
 
-                                order_str += `
-            <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="Chairs">`;
-                                for (i = 0; i < products_data.Chairs.length; i++) {
-                                    if(shopping_cart.Sofas[i] == 0 || (typeof shopping_cart.Chairs[i] ==`undefined`)) {
-                                        document.write(``);
-                                    }
-                                    else{
-                                    order_str += `
-
-        <span>${products_data.Chairs[i][`Type`]}</span>
-        <div class="quantity">
-        <INPUT TYPE="number" min=0 placeholder="0" name="quantities[${i}]" value=${shopping_cart.Chairs[i]} >
-      </div>
-         
-                `;
-                                }
-                            }
-                                // this closes the else for the form and table display
-                                document.write(order_str);
-                            </script>
-                            <script>
-                                var order_str = '';
-
-                                order_str += `
-            <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="Desks">`;
-                                for (i = 0; i < products_data.Desks.length; i++) {
-                                    if(shopping_cart.Desks[i] == 0 || (typeof shopping_cart.Desks[i] ==`undefined`)) {
-                                        document.write(``);
-                                    }
-                                    else{
-                                    order_str += `
-
-        <span>${products_data.Desks[i][`Type`]}</span>
-        <div class="quantity">
-        <INPUT TYPE="number" min=0 placeholder="0" name="quantities[${i}]" value=${shopping_cart.Sofas[i]} >
-      </div>
-         
-                `;
-                                }
-                            }
-                                // this closes the else for the form and table display
-                                document.write(order_str);
-                            </script>>
-                        </main>
-
-                    </div>
-                </form>
                 </main>
 
             </div>

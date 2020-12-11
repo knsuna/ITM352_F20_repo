@@ -16,6 +16,7 @@ var permanentquantities = {};//running variable to keep the values from POST
 //Taken from Lab 13 **NOTE for some reason, I could not figure out why the IsNonNegInt Function was not working properly. Will need to modify function.
 app.post("/process_form", function (request, response) {
     let POST = request.body;
+    console.log(POST)
     permanentquantities = POST;//assignes POST to permanent quantities to be used later when recalling the quantities for invoice
     var TotalQuantity = 0;//assigns total quantity 0, if there are quantitites, the values will be added here
     var NonNegIntQuantity = false;//assign variable to false and will be changed to true if it meets IsNonNegInt requirements

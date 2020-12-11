@@ -3,9 +3,19 @@ var express = require('express');
 var app = express();
 var myParser = require("body-parser");
 var cookieParser = require('cookie-parser');
+var session = require(`express-session`)
 
+app.use(session({secret: "ITM352 rocks!"}));
 app.use(cookieParser());
 
+app.get("/use_session", function (request, response) {
+    if(typeof request.session.id !=`undefined`){
+        response.send(Date())
+    }else{
+        response.send(`First time`)
+    }
+    session.destroy()
+});
 
 app.use(myParser.urlencoded({ extended: true }));
 var filename = 'user_name.json';
@@ -51,11 +61,10 @@ app.post("/login", function (request, response) {
     // Process login form POST and redirect to logged in page if ok, back to login page if not
     console.log(request.body);
     the_username = request.body.username;
-    if (typeof users_reg_data[the_username] != 'undefined') {
+    response.cookie(`username`,the_username)
+    if (request.cookies.username != 'undefined') {
         //if username exists, get password 
-        if (users_reg_data[the_username].password == request.body.password) {
-            response.send(the_username + ' logged in');
-        }
+        response.send(`welcome ${request.cookies.username}`)
     }
      else {
             //send user back to login
