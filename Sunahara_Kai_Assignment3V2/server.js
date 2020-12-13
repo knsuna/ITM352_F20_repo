@@ -6,6 +6,7 @@ var myParser = require("body-parser"); //require body parser
 var products = require('./public/product_data'); //load product_data.json
 var fs = require('fs'); //Code from Lab 13
 var session = require('express-session');
+var nodemailer = require(`nodemailer`)
 const cookieParser = require('cookie-parser');
 var app = express(); //require express
 var user_data_filename = `user_data.json`;
@@ -225,7 +226,98 @@ app.post("/register", function (request, response) {
 
 });
 
+app.get("/email", function (request, response) {
+    // Generate HTML invoice string
+      var invoice_str = `Thank you for your order
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <div class="row">
+									<div class="col-xs-6">
+										<address>
+											<strong>Payment Method:</strong><br>
 
+											${user_reg_data[username].email}<br>
+										</address>
+									</div>
+									<div class="col-xs-6 text-right">
+										<address>
+											<strong>Order Date:</strong><br>
+											${Date()}
+										</address>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<h3>ORDER SUMMARY</h3>
+										<table class="table table-striped">
+											<thead>
+												<tr class="line">
+													<td><strong>ITEM</strong></td>
+													<td class="text-center"><strong>QUANTITY</strong></td>
+													<td class="text-center"><strong>PRICE</strong></td>
+													<td class="text-right"><strong>EXTENDED PRICE</strong></td>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+
+													${display_invoice_table_rows()}	
+												
+												<tr>
+													<td colspan="2"></td>
+													<td class="text-right"><strong>Subtotal</strong></td>
+													<td class="text-right"><strong>$${subtotal.toFixed(2)}</strong></td>
+												</tr>
+												<tr>
+													<td colspan="2"></td>
+													<td class="text-right"><strong>Tax @
+															${(100 * tax_rate)}%</strong></td>
+													<td class="text-right"><strong>$${tax.toFixed(2)}</strong></td>
+												</tr>
+												<tr>
+													<td colspan="2"></td>
+													<td class="text-right"><strong>Shipping</strong></td>
+													<td class="text-right"><strong>$${shipping.toFixed(2)}</strong></td>
+												</tr>
+												<tr>
+													<td colspan="2">
+													</td>
+													<td class="text-right"><strong>Total</strong></td>
+													<td class="text-right"><strong>$${total.toFixed(2)}</strong></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>`
+
+    // Set up mail server. Only will work on UH Network due to security restrictions
+      var transporter = nodemailer.createTransport({
+        host: "mail.hawaii.edu",
+        port: 25,
+        secure: false, // use TLS
+        tls: {
+          // do not fail on invalid certs
+          rejectUnauthorized: false
+        }
+      });
+    
+      var user_email = 'phoney@mt2015.com';
+      var mailOptions = {
+        from: 'phoney_store@bogus.com',
+        to: user_email,
+        subject: 'Your phoney invoice',
+        html: invoice_str
+      };
+    
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          invoice_str += '<br>There was an error and your invoice could not be emailed :(';
+        } else {
+          invoice_str += `<br>Your invoice was mailed to ${user_email}`;
+        }
+        response.send(invoice_str);
+      });
+     
+    });
 
 function isNonNegInt(q, return_errors = false) {
     errors = []; // assume no errors at first
@@ -261,6 +353,7 @@ function validatefullname(fullname) {
 
 //Taken from Assignment 1 example. 
 function display_invoice_table_rows() {
+    
     subtotal = 0;
     str = '';
 	for (products_key in shopping_cart) {

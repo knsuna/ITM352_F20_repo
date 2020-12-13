@@ -185,6 +185,9 @@ Template for invoice taken from bootdey.com. Modified to allow print function, d
 				</div>
 				<!-- End of the invoie function. For the invoice print function. -->
 				<button onclick="printDiv('PrintInvoice')">Print Invoice</button>
+				<form action="./email" method="get">
+				<input type="submit" value="Re-send Email">
+				</form>
 				<b>
 					</br>OUR SHIPPING POLICY IS:A subtotal $0 - $99.99 will be $10 shipping
 					</br>A subtotal $99.99 - $299.99 will be $20 shipping
