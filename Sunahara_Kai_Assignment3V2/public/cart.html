@@ -1,0 +1,147 @@
+<!-- 
+By: Kai Sunahara
+Template from ww3 schools
+Index page/Home page of website
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Furniture Home</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="product-style.css">
+    <script src="./functions.js"></script>
+    <script>
+        var products_data;
+        loadJSON('get_products_data', function (response) {
+            // Parsing JSON string into object
+            products_data = JSON.parse(response);
+        });
+        var this_product_key = ''
+        loadJSON('get_cart', function (response) {
+            // Parsing JSON string into object
+            shopping_cart = JSON.parse(response);
+            cart = response
+            for (pk in shopping_cart) {
+                total += shopping_cart[pk].reduce((a, b) => a + b);
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <!-- Submit Button with sidebar id for CSS -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Logo</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="./index.html">Home</a></li>
+                    <li>
+
+                        <div class="dropdown">
+                            <button class="dropbtn">Products</button>
+                            <div class="dropdown-content">
+                                <script>
+                                    nav_bar(this_product_key, products_data)
+                                </script>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <script>
+                            var username = getCookie(`username`);
+                            if (username == "") {
+                                document.write(`
+                                 <a href="./login"><span class="glyphicon glyphicon-log-in"></span>Login</a>
+                                 `)
+                            } else {
+                                document.write(`
+                                 <a href="./logout"><span class="glyphicon glyphicon-log-in"></span>Logout</a>
+                                 `)
+                            }
+                        </script>
+
+                    </li>
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid text-center">
+        <div class="row content">
+            <div class="col-sm-2 sidenav">
+                <p>
+                    <a href="#"></a>
+                </p>
+                <p>
+                    <a href="#"></a>
+                </p>
+                <p>
+                    <a href="#"></a>
+                </p>
+            </div>
+            <div class="col-sm-8 text-left">
+
+                <script>
+                                var order_str = '';
+
+
+for (products_key in shopping_cart) {
+
+for (i = 0; i < products_data[products_key].length; i++) {
+    if (shopping_cart[products_key][i] != undefined && shopping_cart[products_key][i] != 0) {
+    order_str += `
+    <form action="./add_to_cart" name="products_key" method="get">
+        <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="${products_key}">
+<h2>${products_data[products_key][i]["Type"]}</h2>
+<p> At ${products_data[products_key][i]['Price']} each, ${shopping_cart[products_key][i]} will cost you ${products_data[products_key][i]['Price'] * shopping_cart[products_key][i]}</p>
+<INPUT TYPE="text" name="quantities[${i}]" value="${shopping_cart[products_key][i]}">
+<input type="submit" value="Confirm the Quantity of ${products_data[products_key][i]["Type"]} Changes to Cart!">
+</form>
+`;
+}
+
+}
+}
+// this closes the else for the form and table display
+document.write(order_str);
+    
+                </script>
+
+            </div>
+            <div class="col-sm-2 sidenav">
+                <div class="well">
+                    <p></p>
+                </div>
+                <div class="well">
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="container-fluid text-center">
+        <p>Kai's Furniture Shop</p>
+    </footer>
+
+</body>
+
+</html>

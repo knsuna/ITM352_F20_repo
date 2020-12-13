@@ -72,7 +72,7 @@ Template from ww3 schools
                 <ul class="nav navbar-nav navbar-right">
                     <script>
                         document.write(`
-                    <li><a href="./get_cart">Cart ${total} </a></li>
+                    <li><a href="./cart.html">Cart ${total} </a></li>
                     `)
                     </script>
 
@@ -147,32 +147,43 @@ Template from ww3 schools
                     <!-- Submit Button with sidebar id for CSS -->
 
                     <main>
-
-
+                        <h2>
+                            Quick Cart
+                        </h2>
+                        <h3>
+                            Loads all of your cart information here!
+                        </h3>
                         <script>
-
 
                             for (products_key in shopping_cart) {
                                 for (i = 0; i < products_data[products_key].length; i++) {
-                                    if (shopping_cart[products_key][i] != 0){
+                                    if (shopping_cart[products_key][i] != undefined && shopping_cart[products_key][i] != 0) {
                                         document.write(`
                                             <span>${products_data[products_key][i].Type}</span>
                                             <div id="quantitiesvalue">
-                                            <input type="button" value="-" onclick="minusone()">
-                                            <INPUT TYPE="number" id="${products_data[products_key][i].Type}" min=0 value="${shopping_cart[products_key][i]}">
-                                            <input type="button" value="+" onclick="addone()">
+                                            <INPUT TYPE="number" min=0 value="${shopping_cart[products_key][i]}" readonly>
                                             </div>
                                             `)
-                                        }
-                                    function addone() {
-                                        document.getElementById(`${products_data[products_key][i].Type}`).stepUp(1);
+                                        var cart_values = true
                                     }
-                                    function minusone() {
-                                        document.getElementById(`${products_data[products_key][i].Type}`).stepDown(1);
-                                    }
+
                                 }
                             }
-
+                            if (cart_values) {
+                                document.write(`
+                                <form action="./login" name="login" method="get">
+                                    <input type="submit" value="Pay for Products!"> 
+                                </form>
+                                <form action="./cart.html" name="cart" method="get">
+                                    <input type="submit" value="View Extended Cart"> 
+                                </form>
+                                `)
+                            }
+                            else {
+                                document.write(`
+                                You have no products in your cart
+                                `)
+                            }
                         </script>
                     </main>
 

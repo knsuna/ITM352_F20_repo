@@ -30,10 +30,11 @@ app.get("/add_to_cart", function (request, response) {
     var products_key = request.query['products_key']; // get the product key sent from the form post
     var quantities = request.query['quantities'].map(Number); // Get quantities from the form post and convert strings from form post to numbers
     for (i in quantities){
+        console.log(quantities)
         if(isNonNegInt(quantities[i])){
              request.session.cart[products_key] = quantities; // store the quantities array in the session cart object with the same products_key. 
             return response.send(`<script>
-            alert("${quantities.reduce((a, b) => a + b, 0)} items have been added to the cart"); 
+            alert("${quantities.reduce((a, b) => a + b, 0)} items from this page are in the cart"); 
             window.history.back(); 
             
             </script>`);
@@ -47,10 +48,8 @@ app.get("/add_to_cart", function (request, response) {
     
     }
 });
-var cart = {}
+
 app.post("/get_cart", function (request, response) {
-    cart = request.session.cart
-    console.log(cart)
 response.send(request.session.cart)
 });
 
