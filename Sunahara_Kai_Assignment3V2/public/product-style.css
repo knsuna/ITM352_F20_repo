@@ -125,3 +125,16 @@
 .dropdown:hover .dropdown-content {display: block;}
 
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+.badge:after{
+    content:attr(value);
+    font-size:12px;
+    background:#4CAF50;
+    border-radius:50%;
+    padding:3px;
+    position:relative;
+    left:-8px;
+    top:-10px;
+    opacity:0.9;
+
+    }

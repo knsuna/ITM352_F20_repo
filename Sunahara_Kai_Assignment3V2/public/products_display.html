@@ -11,6 +11,7 @@ Template from ww3 schools
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="./functions.js"></script>
@@ -70,11 +71,15 @@ Template from ww3 schools
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <script>
-                        document.write(`
-                    <li><a href="./cart.html">Cart ${total} </a></li>
-                    `)
-                    </script>
+                    <li>
+                        <script>
+                            document.write(`<a href="./cart.html"><i class="fa badge" style="font-size:24px;margin-bottom:-10%" value="${total}">&#xf07a;</i></a>`)
+                           
+                        </script>
+                                            
+                        
+                                                
+                                            </li>
 
                     <li>
                         <script>

@@ -22,6 +22,7 @@ app.all('*', function (request, response, next) {
 });
 
 app.post("/get_products_data", function (request, response) {
+    products_data = products
     response.json(products);
 });
 
@@ -50,6 +51,8 @@ app.get("/add_to_cart", function (request, response) {
 });
 
 app.post("/get_cart", function (request, response) {
+    shopping_cart = (request.session.cart)
+    console.log(shopping_cart)
 response.send(request.session.cart)
 });
 
@@ -260,27 +263,27 @@ function validatefullname(fullname) {
 function display_invoice_table_rows() {
     subtotal = 0;
     str = '';
-    for (i = 0; i < products.length; i++) {
-        a_qty = 0;
-        if (typeof permanentquantities[`quantity${i}`] != undefined) {
-            a_qty = permanentquantities[`quantity${i}`];
-        }
+	for (products_key in shopping_cart) {
+a_qty = 0;
+for (i = 0; i < products_data[products_key].length; i++) {
+    if (shopping_cart[products_key][i] != undefined && shopping_cart[products_key][i] != 0) {
+        a_qty = shopping_cart[products_key][i]
         if (a_qty > 0) {
             // product row
-            extended_price = a_qty * products[i][`Price`]
+            extended_price = a_qty * products_data[products_key][i][`Price`]
             subtotal += extended_price;
             str += (`
       <tr>
-        <td width="43%">${permanentquantities[i]}</td>
-        <td align="center" width="11%">${a_qty}</td>
-        <td align="center">\$${products[i].Price}</td>
+        <td width="43%">${products_data[products_key][i]["Type"]}</td>
+        <td align="center" width="11%">${shopping_cart[products_key][i]}</td>
+        <td align="center">\$${products_data[products_key][i]['Price']}</td>
         <td align="right">\$${extended_price.toFixed(2)}</td>
       </tr>
 
       `);
+}
 
-        }
-    }
+        }}}
 
     // Compute tax
     tax_rate = 0.0575;
