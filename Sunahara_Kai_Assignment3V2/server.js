@@ -13,12 +13,12 @@ var user_data_filename = `user_data.json`;
 
 //starts parser
 app.use(myParser.urlencoded({ extended: true }));
-app.use(session({secret: `FurnitureShop`}))
+app.use(session({ secret: `FurnitureShop` }))
 
 app.all('*', function (request, response, next) {
     // need to initialize an object to store the cart in the session. We do it when there is any request so that we don't have to check it exists
     // anytime it's used
-    if(typeof request.session.cart == 'undefined') { request.session.cart = {}; } 
+    if (typeof request.session.cart == 'undefined') { request.session.cart = {}; }
     next();
 });
 
@@ -27,34 +27,35 @@ app.post("/get_products_data", function (request, response) {
     response.json(products);
 });
 
+app.post("/user_data", function (request, response) {
+    response.json(user_reg_data);
+});
 
 app.get("/add_to_cart", function (request, response) {
     var products_key = request.query['products_key']; // get the product key sent from the form post
     var quantities = request.query['quantities'].map(Number); // Get quantities from the form post and convert strings from form post to numbers
-    for (i in quantities){
-        console.log(quantities)
-        if(isNonNegInt(quantities[i])){
-             request.session.cart[products_key] = quantities; // store the quantities array in the session cart object with the same products_key. 
+    for (i in quantities) {
+        if (isNonNegInt(quantities[i])) {
+            request.session.cart[products_key] = quantities; // store the quantities array in the session cart object with the same products_key. 
             return response.send(`<script>
             alert("${quantities.reduce((a, b) => a + b, 0)} items from this page are in the cart"); 
             window.history.back(); 
             
             </script>`);
-    }else{
+        } else {
             return response.send(`<script>
             alert("You have entered an Invalid Quantity"); 
             window.history.back(); 
             
             </script>`);
-    }
-    
+        }
+
     }
 });
 
 app.post("/get_cart", function (request, response) {
     shopping_cart = (request.session.cart)
-    console.log(shopping_cart)
-response.send(request.session.cart)
+    response.send(request.session.cart)
 });
 
 //Taken from Lab14. Checks to see if user_data.json exists
@@ -71,12 +72,11 @@ if (fs.existsSync(user_data_filename)) {
 
 app.use(cookieParser());
 
-
 //The GET request is from the login.view page. Whenver /login is used, they will be sent to login.view
 app.get("/login", function (request, response) {
     username = request.cookies.username
     //console.log(request.cookies.username)
-    if (typeof user_reg_data[username] != `undefined`){
+    if (typeof user_reg_data[username] != `undefined`) {
         fullname = user_reg_data[username].name;
         var contents = fs.readFileSync('./public/invoice.view', 'utf8'); //So that the display_invoice_table_rows will be rendered with invoice.view
         return response.send(eval('`' + contents + '`')); // render template string)
@@ -85,8 +85,8 @@ app.get("/login", function (request, response) {
     return response.send(eval('`' + contents + '`')); // render template string
 });
 
-app.get("/logout", function (equest, response) {
-    response.clearCookie("username").send(`Logged out!`);
+app.get("/logout", function (request, response) {
+    response.clearCookie("username").redirect(`./index.html`)
 });
 
 //The POST request will be redirected to either the invoice or be given a page to retry login/register new account. Partically taken from Lab 14
@@ -99,7 +99,7 @@ app.post("/loginform", function (request, response) {
         if ((user_reg_data[username].password == request.body.password) == true) {
             console.log(username + ' logged in');
             fullname = user_reg_data[username].name;
-            response.cookie(`username`,username);
+            response.cookie(`username`, username);
             response.redirect(`./index.html`)
         } else {
             response.send(`<script>
@@ -226,16 +226,109 @@ app.post("/register", function (request, response) {
 
 });
 
+app.get("/checkout", function (request, response) {
+    username = request.cookies.username
+    if (typeof user_reg_data[username] != `undefined`) {
+        fullname = user_reg_data[username].name;
+        email = user_reg_data[username].email;
+        var contents = fs.readFileSync('./public/checkout.view', 'utf8');//So that the display_invoice_table_rows will be rendered with invoice.view
+        response.send(eval('`' + contents + '`')); // render template string
+    }
+    else {
+        response.send(`<script>
+        alert("You have not logged in yet. Please login first!")
+        window.location.href = "./login"
+        </script>`)
+    }
+});
+
 app.get("/email", function (request, response) {
     // Generate HTML invoice string
-      var invoice_str = `Thank you for your order
+    var check = request.query.checkout
+    if(check =! "undefined"){
+    var checkoutvalues = [
+        'fullname',
+        'email',
+        'address',
+        'city',
+        'cardname',
+    ]
+    var creditnumber =request.query.cardnumber
+    var expmonth = request.query.expmonth
+    var expyear = request.query.expyear
+    var cvv = request.query.cvv
+    var state = request.query.state
+    var zip = request.query.zip
+
+    for (i in checkoutvalues){
+        if(request.query[checkoutvalues[i]] == ""){
+                return response.send(`
+                <script>
+                alert("${[checkoutvalues[i]]} has no value")
+                window.history.back()
+                </script>
+                `)                    
+        }
+        if(!statecheck(state)){
+            return response.send(`
+            <script>
+            alert("The State is Invalid")
+            window.history.back()
+            </script>
+            `)       
+        }
+        if(!zipcodecheck(zip)){
+            return response.send(`
+            <script>
+            alert("The Zipcode is Invalid")
+            window.history.back()
+            </script>
+            `)       
+        }
+        if(!cardnumber(creditnumber)){
+            return response.send(`
+            <script>
+            alert("The Credit Card Number is Invalid")
+            window.history.back()
+            </script>
+            `)       
+        }
+        if(!expmonthcheck(expmonth)){
+            return response.send(`
+            <script>
+            alert("The month is Invalid")
+            window.history.back()
+            </script>
+            `)       
+        }
+        if(!expyearcheck(expyear)){
+                return response.send(`
+                <script>
+                alert("The Year is Invalid")
+                window.history.back()
+                </script>
+                `)       
+            
+        }
+        if(!checkcvv(cvv)){
+            return response.send(`
+            <script>
+            alert("The CVV is Invalid")
+            window.history.back()
+            </script>
+            `)       
+        }
+
+    }   
+    }
+    var invoice_str = `Thank you for your order
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
       <div class="row">
 									<div class="col-xs-6">
 										<address>
 											<strong>Payment Method:</strong><br>
 
-											${user_reg_data[username].email}<br>
+											${email}<br>
 										</address>
 									</div>
 									<div class="col-xs-6 text-right">
@@ -290,34 +383,37 @@ app.get("/email", function (request, response) {
 								</div>`
 
     // Set up mail server. Only will work on UH Network due to security restrictions
-      var transporter = nodemailer.createTransport({
+    var transporter = nodemailer.createTransport({
         host: "mail.hawaii.edu",
         port: 25,
         secure: false, // use TLS
         tls: {
-          // do not fail on invalid certs
-          rejectUnauthorized: false
+            // do not fail on invalid certs
+            rejectUnauthorized: false
         }
-      });
-    
-      var user_email = 'phoney@mt2015.com';
-      var mailOptions = {
-        from: 'phoney_store@bogus.com',
-        to: user_email,
-        subject: 'Your phoney invoice',
-        html: invoice_str
-      };
-    
-      transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-          invoice_str += '<br>There was an error and your invoice could not be emailed :(';
-        } else {
-          invoice_str += `<br>Your invoice was mailed to ${user_email}`;
-        }
-        response.send(invoice_str);
-      });
-     
     });
+
+   
+    var mailOptions = {
+        from: 'knsunaha@hawaii.edu',
+        to: email,
+        subject: 'Your Furniture Shop Invoice',
+        html: invoice_str
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            invoicemessage = "There was an error sending your email"
+        } else {
+            invoicemessage = "An email was successfully sent"
+        }
+        response.send(`<script>
+        alert("${invoicemessage}")
+        window.location = "./login"
+        </script>`)
+    });
+    
+});
 
 function isNonNegInt(q, return_errors = false) {
     errors = []; // assume no errors at first
@@ -350,22 +446,45 @@ function validatefullname(fullname) {
     const re = /^[ +a-zA-Z]{0,30}$/
     return re.test(String(fullname));
 }
+function checkcvv(cvv) {//used =@ and +\. to seperate sections of email
+    const re = /^[0-9]{2,3}$/;
+    return re.test(String(cvv));
+}
+function cardnumber(cardnumber) {//used =@ and +\. to seperate sections of email
+    const re = /^[0-9]{16}$/;
+    return re.test(String(cardnumber));
+}
+function statecheck(state) {//used =@ and +\. to seperate sections of email
+    const re = /^[a-zA-Z]{2}$/;
+    return re.test(String(state));
+}
+function zipcodecheck(zip) {//used =@ and +\. to seperate sections of email
+    const re = /^[0-9]{5}$/;
+    return re.test(String(zip));
+}
+function expmonthcheck(month) {//used =@ and +\. to seperate sections of email
+    const re = /^[1-9][0-2]{0,2}$/;
+    return re.test(String(month));
+}
+function expyearcheck(year) {//used =@ and +\. to seperate sections of email
+    const re = /^(20)\d{2}$/;
+    return re.test(String(year));
+}
 
 //Taken from Assignment 1 example. 
 function display_invoice_table_rows() {
-    
     subtotal = 0;
     str = '';
-	for (products_key in shopping_cart) {
-a_qty = 0;
-for (i = 0; i < products_data[products_key].length; i++) {
-    if (shopping_cart[products_key][i] != undefined && shopping_cart[products_key][i] != 0) {
-        a_qty = shopping_cart[products_key][i]
-        if (a_qty > 0) {
-            // product row
-            extended_price = a_qty * products_data[products_key][i][`Price`]
-            subtotal += extended_price;
-            str += (`
+    for (products_key in shopping_cart) {
+        a_qty = 0;
+        for (i = 0; i < products_data[products_key].length; i++) {
+            if (shopping_cart[products_key][i] != undefined && shopping_cart[products_key][i] != 0) {
+                a_qty = shopping_cart[products_key][i]
+                if (a_qty > 0) {
+                    // product row
+                    extended_price = a_qty * products_data[products_key][i][`Price`]
+                    subtotal += extended_price;
+                    str += (`
       <tr>
         <td width="43%">${products_data[products_key][i]["Type"]}</td>
         <td align="center" width="11%">${shopping_cart[products_key][i]}</td>
@@ -374,9 +493,11 @@ for (i = 0; i < products_data[products_key].length; i++) {
       </tr>
 
       `);
-}
+                }
 
-        }}}
+            }
+        }
+    }
 
     // Compute tax
     tax_rate = 0.0575;
@@ -399,10 +520,6 @@ for (i = 0; i < products_data[products_key].length; i++) {
     return str;
 
 }
-
-app.post("/get_products_data", function (request, response) {
-    response.json(products);
-})
 
 app.use(express.static('./public'));
 app.listen(8080, () => console.log(`listening on port 8080`));

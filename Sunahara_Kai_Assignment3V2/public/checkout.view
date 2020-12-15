@@ -1,0 +1,207 @@
+<!-- 
+By: Kai Sunahara
+Template for Invoice from ww3 schools
+Template for invoice taken from bootdey.com. Modified to allow print function, display correpsonding values, and added logo.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Invoice</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="checkout-style.css">
+  <link rel="stylesheet" href="product-style.css">
+  <script src="./functions.js"></script>
+</head>
+
+
+<body>
+	<!-- template for invoice from bootdey.com. Added a function to print the invoice only. -->
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Logo</a>
+			</div>
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="./index.html">Home</a></li>
+					<li></li>
+					<li>
+						<a href="#"></a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a>${fullname}</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container-fluid text-center">
+		<div class="row content">
+			<div class="col-sm-2 sidenav">
+				<p>
+					<a href="#"></a>
+				</p>
+				<p>
+					<a href="#"></a>
+				</p>
+				<p>
+					<a href="#"></a>
+				</p>
+			</div>
+			<div class="col-sm-8 text-left">
+
+				<strong>Welcome ${fullname}, fill out the form below to purchase your products!</strong>
+				<div class="row">
+          <div class="col-75">
+            <div class="container">
+              <form action="/email" method="get">
+        
+                <div class="row">
+                  <div class="col-50">
+                    <input type="hidden" name="checkout" value="true">
+                    <h3>Billing Address</h3>
+                    <label for="fname"><i class="fa fa-user"></i> Full Name</label>
+                    <input type="text" id="fname" name="fullname" value="${fullname}">
+                    <label for="email"><i class="fa fa-envelope"></i> Email</label>
+                    <input type="text" id="email" name="email" value="${email}">
+                    <label for="adr"><i class="fa fa-address-card-o"></i> Address</label>
+                    <input type="text" id="adr" name="address" placeholder="542 W. 15th Street">
+                    <label for="city"><i class="fa fa-institution"></i> City</label>
+                    <input type="text" id="city" name="city" placeholder="New York">
+        
+                    <div class="row">
+                      <div class="col-50">
+                        <label for="state">State</label>
+                        <input type="text" id="state" name="state" placeholder="NY">
+                      </div>
+                      <div class="col-50">
+                        <label for="zip">Zip</label>
+                        <input type="text" id="zip" name="zip" placeholder="10001">
+                      </div>
+                    </div>
+                  </div>
+        
+                  <div class="col-50">
+                    <h3>Payment</h3>
+                    <label for="fname">Accepted Cards</label>
+                    <div class="icon-container">
+                      <i class="fa fa-cc-visa" style="color:navy;"></i>
+                      <i class="fa fa-cc-amex" style="color:blue;"></i>
+                      <i class="fa fa-cc-mastercard" style="color:red;"></i>
+                      <i class="fa fa-cc-discover" style="color:orange;"></i>
+                    </div>
+                    <label for="cname">Name on Card</label>
+                    <input type="text" id="cname" name="cardname" placeholder="John More Doe">
+                    <label for="ccnum">Credit card number</label>
+                    <input type="text" id="ccnum" name="cardnumber" placeholder="1111222233334444">
+                    <label for="expmonth">Exp Month</label>
+                    <input type="text" id="expmonth" name="expmonth" placeholder="1">
+        
+                    <div class="row">
+                      <div class="col-50">
+                        <label for="expyear">Exp Year</label>
+                        <input type="text" id="expyear" name="expyear" placeholder="2018">
+                      </div>
+                      <div class="col-50">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" name="cvv" placeholder="352">
+                      </div>
+                    </div>
+                  </div>
+        
+                </div>
+                <label>
+                  <input type="checkbox" checked="checked" name="sameadr"> Shipping address same as billing
+                </label>
+                <input type="submit" value="Continue to checkout" class="btn">
+              </form>
+            </div>
+          </div>
+        
+          <div class="col-25">
+            <div class="container">
+              <h4>Cart
+                <span class="price" style="color:black">
+                  <i class="fa fa-shopping-cart"></i>
+                  <b></b>
+                </span>
+              </h4>
+              <div class="row">
+                <div class="col-md-12">
+                  <h3>ORDER SUMMARY</h3>
+                  <table class="table table-striped">
+                    <thead>
+                      <tr class="line">
+                        <td><strong>ITEM</strong></td>
+                        <td class="text-center"><strong>QUANTITY</strong></td>
+                        <td class="text-center"><strong>PRICE</strong></td>
+                        <td class="text-right"><strong>EXTENDED PRICE</strong></td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+
+                        ${display_invoice_table_rows()}	
+                      
+                      <tr>
+                        <td colspan="2"></td>
+                        <td class="text-right"><strong>Subtotal</strong></td>
+                        <td class="text-right"><strong>$${subtotal.toFixed(2)}</strong></td>
+                      </tr>
+                      <tr>
+                        <td colspan="2"></td>
+                        <td class="text-right"><strong>Tax @
+                            ${(100 * tax_rate)}%</strong></td>
+                        <td class="text-right"><strong>$${tax.toFixed(2)}</strong></td>
+                      </tr>
+                      <tr>
+                        <td colspan="2"></td>
+                        <td class="text-right"><strong>Shipping</strong></td>
+                        <td class="text-right"><strong>$${shipping.toFixed(2)}</strong></td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                        </td>
+                        <td class="text-right"><strong>Total</strong></td>
+                        <td class="text-right"><strong>$${total.toFixed(2)}</strong></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+				<b>
+					</br>OUR SHIPPING POLICY IS:A subtotal $0 - $99.99 will be $10 shipping
+					</br>A subtotal $99.99 - $299.99 will be $20 shipping
+					</br>Subtotals over $299.99 will be charged 15% of the subtotal amount
+				</b></br>
+			</div>
+			<div class="col-sm-2 sidenav">
+				<div class="well">
+					<p></p>
+				</div>
+				<div class="well">
+					<p></p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer class="container-fluid text-center">
+		<p>Kai's Furniture Shop</p>
+	</footer>
+
+</body>
+
+</html>

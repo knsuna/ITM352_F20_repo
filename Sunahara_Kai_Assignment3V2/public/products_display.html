@@ -31,6 +31,10 @@ Template from ww3 schools
                 total += shopping_cart[pk].reduce((a, b) => a + b);
             }
         });
+        loadJSON(`user_data`, function (response) {
+            // Parsing JSON string into object
+            user_reg_data = JSON.parse(response);
+        });
 
         // get the query string
         let params = (new URL(document.location)).searchParams;
@@ -76,11 +80,7 @@ Template from ww3 schools
                             document.write(`<a href="./cart.html"><i class="fa badge" style="font-size:24px;margin-bottom:-10%" value="${total}">&#xf07a;</i></a>`)
                            
                         </script>
-                                            
-                        
-                                                
-                                            </li>
-
+                    </li>
                     <li>
                         <script>
                             var username = getCookie(`username`);
@@ -153,7 +153,14 @@ Template from ww3 schools
 
                     <main>
                         <h2>
-                            Quick Cart
+                            <script>
+                                if (username != ""){
+                                    document.write(`Here is your Quick Cart, ${user_reg_data[username].name}`)
+                                }
+                                else{
+                                    document.write(`Quick Cart`)
+                                }
+                            </script>
                         </h2>
                         <h3>
                             Loads all of your cart information here!
@@ -176,7 +183,7 @@ Template from ww3 schools
                             }
                             if (cart_values) {
                                 document.write(`
-                                <form action="./login" name="login" method="get">
+                                <form action="./checkout" name="checkout" method="get">
                                     <input type="submit" value="Pay for Products!"> 
                                 </form>
                                 <form action="./cart.html" name="cart" method="get">
