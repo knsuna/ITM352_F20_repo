@@ -17,7 +17,7 @@ Index page/Home page of website
     <link rel="stylesheet" href="product-style.css">
     <script src="./functions.js"></script>
     <script>
-                var products_data;
+        var products_data;
         var total = 0;
         loadJSON('get_products_data', function (response) {
             // Parsing JSON string into object
@@ -31,6 +31,10 @@ Index page/Home page of website
             for (pk in shopping_cart) {
                 total += shopping_cart[pk].reduce((a, b) => a + b);
             }
+        });
+        loadJSON(`user_data`, function (response) {
+            // Parsing JSON string into object
+            user_reg_data = JSON.parse(response);
         });
     </script>
 </head>
@@ -67,25 +71,25 @@ Index page/Home page of website
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-<script>
-    document.write(`<a href="./cart.html"><i class="fa badge" style="font-size:24px;margin-bottom:-10%" value="${total}">&#xf07a;</i></a>`)
-   
-</script>
-                    
+                        <script>
+                            document.write(`<a href="./cart.html"><i class="fa badge" style="font-size:24px;margin-bottom:-10%" value="${total}">&#xf07a;</i></a>`)
 
-                        
+                        </script>
+
+
+
                     </li>
                     <li>
                         <script>
                             var username = getCookie(`username`);
                             if (username == "") {
                                 document.write(`
-                                 <a href="./login"><span class="glyphicon glyphicon-log-in"></span>Login</a>
-                                 `)
+                                  <a href="./login"><span class="glyphicon glyphicon-log-in"></span>Login</a>
+                                  `)
                             } else {
                                 document.write(`
-                                 <a href="./logout"><span class="glyphicon glyphicon-log-in"></span>Logout</a>
-                                 `)
+                                  <a href="./logout"><span class="glyphicon glyphicon-log-in"></span>Logout</a>
+                                  `)
                             }
                         </script>
 
@@ -112,42 +116,132 @@ Index page/Home page of website
             <div class="col-sm-8 text-left">
 
                 <script>
-                                var order_str = '';
+                    var order_str = '';
 
 
-for (products_key in shopping_cart) {
+                    for (products_key in shopping_cart) {
 
-for (i = 0; i < products_data[products_key].length; i++) {
-    if (shopping_cart[products_key][i] != undefined && shopping_cart[products_key][i] != 0) {
-    order_str += `
-    <form action="./add_to_cart" name="products_key" method="get">
-        <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="${products_key}">
-<h2>${products_data[products_key][i]["Type"]}</h2>
-<p> At ${products_data[products_key][i]['Price']} each, ${shopping_cart[products_key][i]} will cost you ${products_data[products_key][i]['Price'] * shopping_cart[products_key][i]}</p>
-<INPUT TYPE="text" name="quantities[${i}]" value="${shopping_cart[products_key][i]}">
-<input type="submit" value="Confirm the Quantity of ${products_data[products_key][i]["Type"]} Changes to Cart!">
-</form>
-`;
-}
+                        for (i = 0; i < products_data[products_key].length; i++) {
+                            if (shopping_cart[products_key][i] != undefined && shopping_cart[products_key][i] != 0) {
+                                var payform = true;
+                                var extendedprice = products_data[products_key][i]['Price'] * shopping_cart[products_key][i];
+                                order_str += `
+     <form action="./add_to_cart" name="products_key" method="get">
+         <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="${products_key}">
+ <h2>${products_data[products_key][i]["Type"]}</h2>
+ <p> At ${products_data[products_key][i]['Price']} each, ${shopping_cart[products_key][i]} will cost you ${extendedprice.toFixed(2)}</p>
+ <INPUT TYPE="text" name="quantities[${i}]" value="${shopping_cart[products_key][i]}">
+ <input type="submit" value="Confirm the Quantity of ${products_data[products_key][i]["Type"]} Changes to Cart!">
+ </form>
+ `;
+                            }
 
-}
-}
-// this closes the else for the form and table display
-document.write(order_str);
-    
+                        }
+                    }
+                    // this closes the else for the form and table display
+                    document.write(order_str);
+
                 </script>
 
             </div>
+            <script>
+                if(payform != "true"){
+                    document.write(`
             <form action="./checkout" name="checkout" method="get">
-                <input type="submit" value="Pay for Products!"> 
+                <input type="submit" value="Pay for Products!">
             </form>
+            `)
+        }                
+            </script>
+
             <div class="col-sm-2 sidenav">
-                <div class="well">
-                    <p></p>
+                <div class="col-sm-2 sidenav">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3><script>
+                                if(username != ""){
+                                    document.write(`${user_reg_data[username].name}'s Cart Summary`)
+                                }
+                                else{
+                                    document.write(`Cart Summary`)
+                                }
+
+                            </script></h3>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr class="line">
+                                        <td><strong>ITEM</strong></td>
+                                        <td class="text-right"><strong>EXTENDED PRICE</strong></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <script>
+                                            subtotal = 0;
+                                            str = '';
+                                            for (products_key in shopping_cart) {
+                                                a_qty = 0;
+                                                for (i = 0; i < products_data[products_key].length; i++) {
+                                                    if (shopping_cart[products_key][i] != undefined && shopping_cart[products_key][i] != 0) {
+                                                        a_qty = shopping_cart[products_key][i]
+                                                        if (a_qty > 0) {
+                                                            // product row
+                                                            extended_price = a_qty * products_data[products_key][i][`Price`]
+                                                            subtotal += extended_price;
+                                                            str += (`
+                                            <br><tr>
+                                                <td width="43%">${products_data[products_key][i]["Type"]}</td>
+                                                <td align="right">\$${extended_price.toFixed(2)}</td>
+                                            </tr>`);
+                                                        }
+    
+                                                    }
+                                                }
+                                            }
+    
+                                            // Compute tax
+                                            tax_rate = 0.0575;
+                                            tax = tax_rate * subtotal;
+    
+                                            // Compute shipping
+                                            if (subtotal <= 99.99) {
+                                                shipping = 10;
+                                            }
+                                            else if (subtotal <= 299.99) {
+                                                shipping = 20;
+                                            }
+                                            else {
+                                                shipping = 0.15 * subtotal; // 5% of subtotal
+                                            }
+    
+                                            // Compute grand total
+                                            total = subtotal + tax + shipping;
+    
+                                            document.write(str)
+    
+                                        </script>
+                                        <tr class="line">
+                                            <td><strong>Subtotal</strong></td>
+                                            <td class="text-right"><strong><script>document.write(`${subtotal.toFixed(2)}`)</script></strong></td>
+                                        </tr>
+                                        <tr class="line">
+                                            <td><strong>Tax</strong></td>
+                                            <td class="text-right"><strong><script>document.write(`${tax.toFixed(2)}`)</script></strong></td>
+                                        </tr>
+                                        <tr class="line">
+                                            <td><strong>Shipping</strong></td>
+                                            <td class="text-right"><strong><script>document.write(`${shipping.toFixed(2)}`)</script></strong></td>
+                                        </tr>
+                                        <tr class="line">
+                                            <td><strong>Total</strong></td>
+                                            <td class="text-right"><strong><script>document.write(`${total.toFixed(2)}`)</script></strong</td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <div class="well">
-                    <p></p>
-                </div>
+            </div>
             </div>
         </div>
     </div>

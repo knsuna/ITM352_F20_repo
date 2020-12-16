@@ -72,23 +72,6 @@ if (fs.existsSync(user_data_filename)) {
 
 app.use(cookieParser());
 
-//The GET request is from the login.view page. Whenver /login is used, they will be sent to login.view
-app.get("/login", function (request, response) {
-    username = request.cookies.username
-    //console.log(request.cookies.username)
-    if (typeof user_reg_data[username] != `undefined`) {
-        fullname = user_reg_data[username].name;
-        var contents = fs.readFileSync('./public/invoice.view', 'utf8'); //So that the display_invoice_table_rows will be rendered with invoice.view
-        return response.send(eval('`' + contents + '`')); // render template string)
-    }
-    var contents = fs.readFileSync('./public/login.view', 'utf8');
-    return response.send(eval('`' + contents + '`')); // render template string
-});
-
-app.get("/logout", function (request, response) {
-    response.clearCookie("username").redirect(`./index.html`)
-});
-
 //The POST request will be redirected to either the invoice or be given a page to retry login/register new account. Partically taken from Lab 14
 app.post("/loginform", function (request, response) {
     // Process login form POST and redirect to logged in page if ok, back to login page if not
@@ -226,6 +209,7 @@ app.post("/register", function (request, response) {
 
 });
 
+
 app.get("/checkout", function (request, response) {
     username = request.cookies.username
     if (typeof user_reg_data[username] != `undefined`) {
@@ -242,10 +226,10 @@ app.get("/checkout", function (request, response) {
     }
 });
 
-app.get("/email", function (request, response) {
+var invoicevalues = {}
+
+app.get("/invoice", function (request, response) {
     // Generate HTML invoice string
-    var check = request.query.checkout
-    if(check =! "undefined"){
     var checkoutvalues = [
         'fullname',
         'email',
@@ -253,15 +237,9 @@ app.get("/email", function (request, response) {
         'city',
         'cardname',
     ]
-    var creditnumber =request.query.cardnumber
-    var expmonth = request.query.expmonth
-    var expyear = request.query.expyear
-    var cvv = request.query.cvv
-    var state = request.query.state
-    var zip = request.query.zip
 
     for (i in checkoutvalues){
-        if(request.query[checkoutvalues[i]] == ""){
+        if(request.query[checkoutvalues[i]] == ``){
                 return response.send(`
                 <script>
                 alert("${[checkoutvalues[i]]} has no value")
@@ -269,7 +247,8 @@ app.get("/email", function (request, response) {
                 </script>
                 `)                    
         }
-        if(!statecheck(state)){
+    }
+        if(!statecheck(request.query.state)){
             return response.send(`
             <script>
             alert("The State is Invalid")
@@ -277,7 +256,7 @@ app.get("/email", function (request, response) {
             </script>
             `)       
         }
-        if(!zipcodecheck(zip)){
+        if(!zipcodecheck(request.query.zip)){
             return response.send(`
             <script>
             alert("The Zipcode is Invalid")
@@ -285,7 +264,7 @@ app.get("/email", function (request, response) {
             </script>
             `)       
         }
-        if(!cardnumber(creditnumber)){
+        if(!cardnumber(request.query.cardnumber)){
             return response.send(`
             <script>
             alert("The Credit Card Number is Invalid")
@@ -293,7 +272,7 @@ app.get("/email", function (request, response) {
             </script>
             `)       
         }
-        if(!expmonthcheck(expmonth)){
+        if(!expmonthcheck(request.query.expmonth)){
             return response.send(`
             <script>
             alert("The month is Invalid")
@@ -301,7 +280,7 @@ app.get("/email", function (request, response) {
             </script>
             `)       
         }
-        if(!expyearcheck(expyear)){
+        if(!expyearcheck(request.query.expyear)){
                 return response.send(`
                 <script>
                 alert("The Year is Invalid")
@@ -310,7 +289,7 @@ app.get("/email", function (request, response) {
                 `)       
             
         }
-        if(!checkcvv(cvv)){
+        if(!checkcvv(request.query.cvv)){
             return response.send(`
             <script>
             alert("The CVV is Invalid")
@@ -318,69 +297,120 @@ app.get("/email", function (request, response) {
             </script>
             `)       
         }
+    
+    
 
-    }   
-    }
-    var invoice_str = `Thank you for your order
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-      <div class="row">
-									<div class="col-xs-6">
-										<address>
-											<strong>Payment Method:</strong><br>
+    var invoice_str = `<!-- BEGIN INVOICE -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="product-style.css">
+    <div id="PrintInvoice">
+        <div class="col-xs-12">
+            <div class="grid invoice">
+                <div class="grid-body">
+                    <div class="invoice-title">
+                        <div class="row">
+                            <div class="col-xs-12">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h2>
+                                    Invoice<br>
+                                    <span class="small"></span></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <address>
+                                <strong>Billed To:</strong><br>
+                                ${request.query.fullname}<br>
+                                ${request.query.state}<br>
+                                ${request.query.city} ${request.query.zip}
+                            </address>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                            <address>
+                                <strong>Shipped To:</strong><br>
+                                ${request.query.fullname}<br>
+                                ${request.query.state}<br>
+                                ${request.query.city} ${request.query.zip}
+                            </address>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <address>
+                                <strong>Payment Method:</strong><br>
+                                ${request.query.cardnumber} ${request.query.expmonth}/${request.query.expyear}<br>
+                            </address>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                            <address>
+                                <strong>Order Date:</strong><br>
+                                ${Date()}
+                            </address>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>ORDER SUMMARY</h3>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr class="line">
+                                        <td><strong>ITEM</strong></td>
+                                        <td class="text-center"><strong>QUANTITY</strong></td>
+                                        <td class="text-center"><strong>PRICE</strong></td>
+                                        <td class="text-right"><strong>EXTENDED PRICE</strong></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
 
-											${email}<br>
-										</address>
-									</div>
-									<div class="col-xs-6 text-right">
-										<address>
-											<strong>Order Date:</strong><br>
-											${Date()}
-										</address>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12">
-										<h3>ORDER SUMMARY</h3>
-										<table class="table table-striped">
-											<thead>
-												<tr class="line">
-													<td><strong>ITEM</strong></td>
-													<td class="text-center"><strong>QUANTITY</strong></td>
-													<td class="text-center"><strong>PRICE</strong></td>
-													<td class="text-right"><strong>EXTENDED PRICE</strong></td>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
+                                        ${display_invoice_table_rows()}	
+                                    
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td class="text-right"><strong>Subtotal</strong></td>
+                                        <td class="text-right"><strong>$${subtotal.toFixed(2)}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td class="text-right"><strong>Tax @
+                                                ${(100 * tax_rate)}%</strong></td>
+                                        <td class="text-right"><strong>$${tax.toFixed(2)}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td class="text-right"><strong>Shipping</strong></td>
+                                        <td class="text-right"><strong>$${shipping.toFixed(2)}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                        </td>
+                                        <td class="text-right"><strong>Total</strong></td>
+                                        <td class="text-right"><strong>$${total.toFixed(2)}</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-right identity">
+                            <p>Invoice Generated From:<br><strong>Kai's Furniture Shop</strong></p>
+                            <img class="logo" src="./images/SmallLogo.jpg" height="100" alt=""><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-													${display_invoice_table_rows()}	
-												
-												<tr>
-													<td colspan="2"></td>
-													<td class="text-right"><strong>Subtotal</strong></td>
-													<td class="text-right"><strong>$${subtotal.toFixed(2)}</strong></td>
-												</tr>
-												<tr>
-													<td colspan="2"></td>
-													<td class="text-right"><strong>Tax @
-															${(100 * tax_rate)}%</strong></td>
-													<td class="text-right"><strong>$${tax.toFixed(2)}</strong></td>
-												</tr>
-												<tr>
-													<td colspan="2"></td>
-													<td class="text-right"><strong>Shipping</strong></td>
-													<td class="text-right"><strong>$${shipping.toFixed(2)}</strong></td>
-												</tr>
-												<tr>
-													<td colspan="2">
-													</td>
-													<td class="text-right"><strong>Total</strong></td>
-													<td class="text-right"><strong>$${total.toFixed(2)}</strong></td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>`
+    </div>
+    <!-- End of the invoie function. For the invoice print function. -->`
 
     // Set up mail server. Only will work on UH Network due to security restrictions
     var transporter = nodemailer.createTransport({
@@ -396,7 +426,7 @@ app.get("/email", function (request, response) {
    
     var mailOptions = {
         from: 'knsunaha@hawaii.edu',
-        to: email,
+        to: request.query.email,
         subject: 'Your Furniture Shop Invoice',
         html: invoice_str
     };
@@ -412,7 +442,35 @@ app.get("/email", function (request, response) {
         window.location = "./login"
         </script>`)
     });
-    
+    invoicevalues = {
+        email: request.query.email,
+        cardname : request.query.cardname,
+        city : request.query.city,
+        fullname : request.query.fullname,
+        state: request.query.state,
+        zip: request.query.zip,
+        cardnumber: request.query.cardnumber,
+        expmonth: request.query.expmonth,
+        expyear: request.query.expyear,
+    }
+});
+
+//The GET request is from the login.view page. Whenver /login is used, they will be sent to login.view
+app.get("/login", function (request, response) {
+    console.log(invoicevalues)
+    username = request.cookies.username
+    //console.log(request.cookies.username)
+    if (typeof user_reg_data[username] != `undefined`) {
+        fullname = user_reg_data[username].name;
+        var contents = fs.readFileSync('./public/invoice.view', 'utf8'); //So that the display_invoice_table_rows will be rendered with invoice.view
+        return response.send(eval('`' + contents + '`')); // render template string)
+    }
+    var contents = fs.readFileSync('./public/login.view', 'utf8');
+    return response.send(eval('`' + contents + '`')); // render template string
+});
+
+app.get("/logout", function (request, response) {
+    response.clearCookie("username").redirect(`./index.html`)
 });
 
 function isNonNegInt(q, return_errors = false) {

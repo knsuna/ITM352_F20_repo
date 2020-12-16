@@ -63,12 +63,12 @@ Template for invoice taken from bootdey.com. Modified to allow print function, d
 				<div class="row">
           <div class="col-75">
             <div class="container">
-              <form action="/email" method="get">
+              <form action="/invoice" method="get">
         
                 <div class="row">
                   <div class="col-50">
                     <input type="hidden" name="checkout" value="true">
-                    <h3>Billing Address</h3>
+                    <h3>Shipping Address</h3>
                     <label for="fname"><i class="fa fa-user"></i> Full Name</label>
                     <input type="text" id="fname" name="fullname" value="${fullname}">
                     <label for="email"><i class="fa fa-envelope"></i> Email</label>
