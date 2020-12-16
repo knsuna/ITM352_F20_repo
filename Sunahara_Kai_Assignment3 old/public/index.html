@@ -12,28 +12,14 @@ Index page/Home page of website
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="product-style.css">
     <script src="./functions.js"></script>
     <script>
         var products_data;
-        var total = 0;
         loadJSON('get_products_data', function (response) {
             // Parsing JSON string into object
             products_data = JSON.parse(response);
-        });
-        loadJSON(`user_data`, function (response) {
-            // Parsing JSON string into object
-            user_reg_data = JSON.parse(response);
-        });
-        loadJSON('get_cart', function (response) {
-            // Parsing JSON string into object
-            shopping_cart = JSON.parse(response);
-            cart = response
-            for (pk in shopping_cart) {
-                total += shopping_cart[pk].reduce((a, b) => a + b);
-            }
         });
         var this_product_key = ''
     </script>
@@ -72,12 +58,6 @@ Index page/Home page of website
                 <ul class="nav navbar-nav navbar-right">
                     <li>
                         <script>
-                            document.write(`<a href="./cart.html"><i class="fa badge" style="font-size:24px;margin-bottom:-10%" value="${total}">&#xf07a;</i></a>`)
-                           
-                        </script>
-                    </li>
-                    <li>
-                        <script>
                             var username = getCookie(`username`);
                             if(username == ""){
                                 document.write(`
@@ -91,6 +71,7 @@ Index page/Home page of website
                         </script>
                     
                     </li>
+                    <li></li>
                 </ul>
             </div>
         </div>
@@ -118,46 +99,11 @@ Index page/Home page of website
                     view your invoice!</p>
             </div>
             <div class="col-sm-2 sidenav">
-                <script>
-                    if (username != ""){
-                        document.write(`You are logged in, ${user_reg_data[username].name}`)
-                    }
-                    else{
-                        document.write(``)
-                    }
-                </script> 
-                <script>
-
-                    for (products_key in shopping_cart) {
-                        for (i = 0; i < products_data[products_key].length; i++) {
-                            if (shopping_cart[products_key][i] != undefined && shopping_cart[products_key][i] != 0) {
-                                document.write(`
-                                    <span>${products_data[products_key][i].Type}</span>
-                                    <div id="quantitiesvalue">
-                                    <INPUT TYPE="number" min=0 value="${shopping_cart[products_key][i]}" readonly>
-                                    </div>
-                                    `)
-                                var cart_values = true
-                            }
-
-                        }
-                    }
-                    if (cart_values) {
-                        document.write(`
-                        <form action="./checkout" name="checkout" method="get">
-                            <input type="submit" value="Pay for Products!"> 
-                        </form>
-                        <form action="./cart.html" name="cart" method="get">
-                            <input type="submit" value="View Extended Cart"> 
-                        </form>
-                        `)
-                    }
-                    else {
-                        document.write(`
-                        You have no products in your cart
-                        `)
-                    }
-                </script>
+                <div class="well">
+                    <p></p>
+                </div>
+                <div class="well">
+                    <p></p>
                 </div>
             </div>
         </div>

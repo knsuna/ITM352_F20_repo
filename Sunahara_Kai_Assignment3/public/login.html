@@ -12,21 +12,24 @@ Template from ww3 schools
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="product-style.css">
+    <script src="./functions.js"></script>
 </head>
 <script>
+        var total = 0;
         loadJSON('get_cart', function (response) {
             // Parsing JSON string into object
             shopping_cart = JSON.parse(response);
-            shoppingvalues = response;
+            cart = response
             for (pk in shopping_cart) {
                 total += shopping_cart[pk].reduce((a, b) => a + b);
             }
         });
 </script>
 <body>
-    <!-- Submit Button with sidebar id for CSS -->
+    <!-- From Bootstrap Example template -->
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -40,13 +43,38 @@ Template from ww3 schools
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="./index.html">Home</a></li>
-                    <li><a href="./products_display.html">Products</a></li>
                     <li>
-                        <a href="#"></a>
+                        <div class="dropdown">
+                            <button class="dropbtn">Products</button>
+                            <div class="dropdown-content">
+                                <script>
+                                    nav_bar(this_product_key, products_data)
+                                </script>
+                            </div>
+                        </div>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li></li>
+                    <li>
+                        <script>
+                            document.write(`<a href="./cart.html"><i class="fa badge" style="font-size:24px;margin-bottom:-10%" value="${total}">&#xf07a;</i></a>`)
+                           
+                        </script>
+                    </li>
+                    <li>
+                        <script>
+                            var username = getCookie(`username`);
+                            if (username == "") {
+                                document.write(`
+                                <a href="./login"><span class="glyphicon glyphicon-log-in"></span>Login</a>
+                                `)
+                            } else {
+                                document.write(`
+                                <a href="./logout"><span class="glyphicon glyphicon-log-in"></span>Logout</a>
+                                `)
+                            }
+                        </script>
+                    </li>
                 </ul>
             </div>
         </div>

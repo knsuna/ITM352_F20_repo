@@ -1,0 +1,35 @@
+{
+    "Sofas":[
+{
+    "Type": "Regular Sofa",
+    "Price": "199.99",
+    "Image": "./images/RegSofa.jpg"
+},
+{
+    "Type": "Premium Sofa",
+    "Price": "399.99",
+    "Image": "./images/PreSofa.jpg"
+}
+    ],
+    "Tables":[
+{
+    "Type": "Koa Wood Table",
+    "Price": "199.99",
+    "Image": "./images/KoaTable.jpg"
+}
+    ],
+    "Chairs":[
+{
+    "Type": "Wooden Chairs",
+    "Price": "69.99",
+    "Image": "./images/WoodChair.jpg"
+}
+    ],
+    "Desks":[
+{
+    "Type": "Wooden Desk",
+    "Price": "399.99",
+    "Image": "./images/WoodDesk.jpg"
+}
+]
+}

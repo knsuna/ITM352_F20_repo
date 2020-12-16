@@ -9,6 +9,11 @@
     "Type": "Premium Sofa",
     "Price": "399.99",
     "Image": "./images/PreSofa.jpg"
+},
+{
+    "Type": "Leather Sofa",
+    "Price": "599.99",
+    "Image": "./images/leathersofa.jpg"
 }
     ],
     "Tables":[
@@ -16,13 +21,38 @@
     "Type": "Koa Wood Table",
     "Price": "199.99",
     "Image": "./images/KoaTable.jpg"
+},
+{
+    "Type": "Expandable Dining Table",
+    "Price": "799.99",
+    "Image": "./images/expandablediningtable.jpg"
+},
+{
+    "Type": "Coffeee Table",
+    "Price": "499.99",
+    "Image": "./images/coffeetable.jpg"
+},
+{
+    "Type": "Bedside Table",
+    "Price": "799.99",
+    "Image": "./images/bedsidetable.jpg"
 }
     ],
     "Chairs":[
 {
-    "Type": "Wooden Chairs",
+    "Type": "Wooden Chair",
     "Price": "69.99",
     "Image": "./images/WoodChair.jpg"
+},
+{
+    "Type": "Rocking Chair",
+    "Price": "199.99",
+    "Image": "./images/rockingchair.jpg"
+},
+{
+    "Type": "Office Chair",
+    "Price": "149.99",
+    "Image": "./images/officechair.jpg"
 }
     ],
     "Desks":[
@@ -30,6 +60,17 @@
     "Type": "Wooden Desk",
     "Price": "399.99",
     "Image": "./images/WoodDesk.jpg"
+},
+{
+    "Type": "L Desk",
+    "Price": "999.99",
+    "Image": "./images/ldesk.jpg"
+},
+{
+    "Type": "Student Desk",
+    "Price": "399.99",
+    "Image": "./images/studentdesk.jpg"
 }
 ]
+
 }
