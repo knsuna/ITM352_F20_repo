@@ -1,7 +1,7 @@
 <!-- 
 By: Kai Sunahara
 Template from ww3 schools
-Index page/Home page of website
+Cart page
  -->
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +17,9 @@ Index page/Home page of website
     <link rel="stylesheet" href="product-style.css">
     <script src="./functions.js"></script>
     <script>
+        //taken from the assignment 3 example
         var products_data;
+        //for shopping cart total, need to start count at 0
         var total = 0;
         loadJSON('get_products_data', function (response) {
             // Parsing JSON string into object
@@ -72,6 +74,7 @@ Index page/Home page of website
                 <ul class="nav navbar-nav navbar-right">
                     <li>
                         <script>
+                            //displays the total within a shopping cart
                             document.write(`<a href="./cart.html"><i class="fa badge" style="font-size:24px;margin-bottom:-10%" value="${total}">&#xf07a;</i></a>`)
 
                         </script>
@@ -81,6 +84,7 @@ Index page/Home page of website
                     </li>
                     <li>
                         <script>
+                            //checks if their is a cookie. Will dispaly a login or logout accordingly
                             var username = getCookie(`username`);
                             if (username == "") {
                                 document.write(`
@@ -116,6 +120,7 @@ Index page/Home page of website
             <div class="col-sm-8 text-left">
 
                 <script>
+                    //displays the products within the shopping cart. Since it only dispalys the items in the shopping cart, I do not need to worry about any other products being in here
                     var order_str = '';
 
 
@@ -145,6 +150,7 @@ Index page/Home page of website
 
             </div>
             <script>
+                //if there is items in the cart, I will diplay an option to check or purchase
                 if(payform != "true"){
                     document.write(`
             <form action="./checkout" name="checkout" method="get">
@@ -159,6 +165,7 @@ Index page/Home page of website
                     <div class="row">
                         <div class="col-md-12">
                             <h3><script>
+                                //displays message about the individuals cart information
                                 if(username != ""){
                                     document.write(`${user_reg_data[username].name}'s Cart Summary`)
                                 }
@@ -177,6 +184,7 @@ Index page/Home page of website
                                 <tbody>
                                     <tr>
                                         <script>
+                                            //diplays the various totals
                                             subtotal = 0;
                                             str = '';
                                             for (products_key in shopping_cart) {

@@ -18,6 +18,7 @@ Template from ww3 schools
     <script src="./functions.js"></script>
 </head>
 <script>
+    //gets cart information to be used to display cart
         var total = 0;
         loadJSON('get_cart', function (response) {
             // Parsing JSON string into object
@@ -48,6 +49,7 @@ Template from ww3 schools
                             <button class="dropbtn">Products</button>
                             <div class="dropdown-content">
                                 <script>
+                                    //gets navbar function from functions.js
                                     nav_bar(this_product_key, products_data)
                                 </script>
                             </div>
@@ -57,12 +59,14 @@ Template from ww3 schools
                 <ul class="nav navbar-nav navbar-right">
                     <li>
                         <script>
+                            //displays cart information
                             document.write(`<a href="./cart.html"><i class="fa badge" style="font-size:24px;margin-bottom:-10%" value="${total}">&#xf07a;</i></a>`)
                            
                         </script>
                     </li>
                     <li>
                         <script>
+                            //displays username if there is a cookie with "username"
                             var username = getCookie(`username`);
                             if (username == "") {
                                 document.write(`

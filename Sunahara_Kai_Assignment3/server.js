@@ -22,15 +22,18 @@ app.all('*', function (request, response, next) {
     next();
 });
 
+//gets the products information. Saves it as a variable to be used late and sents it to loadjson. (Assignment 3 Example)
 app.post("/get_products_data", function (request, response) {
     products_data = products
     response.json(products);
 });
 
+//gets the users information and sends it to loadjson(Assignment 3 Example)
 app.post("/user_data", function (request, response) {
     response.json(user_reg_data);
 });
 
+//adds the specified quantity, saves it, and displays infroamtion regarding how much was put in the cart
 app.get("/add_to_cart", function (request, response) {
     var products_key = request.query['products_key']; // get the product key sent from the form post
     var quantities = request.query['quantities'].map(Number); // Get quantities from the form post and convert strings from form post to numbers
@@ -53,6 +56,7 @@ app.get("/add_to_cart", function (request, response) {
     }
 });
 
+//used to send the corresponding cart information when requested. used to display cart informaiton.(Assignment 3 Example)
 app.post("/get_cart", function (request, response) {
     shopping_cart = (request.session.cart)
     response.send(request.session.cart)
@@ -209,7 +213,7 @@ app.post("/register", function (request, response) {
 
 });
 
-
+//renders the checkout when requested. Will save username, fullname, and email variables to be used in the form that is loaded
 app.get("/checkout", function (request, response) {
     username = request.cookies.username
     if (typeof user_reg_data[username] != `undefined`) {
@@ -226,8 +230,7 @@ app.get("/checkout", function (request, response) {
     }
 });
 
-var invoicevalues = {}
-
+//will check that values in checkout is good. If it is, it will then forwad an email address to what the email address is.
 app.get("/invoice", function (request, response) {
     // Generate HTML invoice string
     var checkoutvalues = [
@@ -301,11 +304,12 @@ app.get("/invoice", function (request, response) {
     
 
     var invoice_str = `<!-- BEGIN INVOICE -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="product-style.css">
-    <div id="PrintInvoice">
+    <link rel="stylesheet" href="product-style.css">
+    </head>
         <div class="col-xs-12">
             <div class="grid invoice">
                 <div class="grid-body">
@@ -408,11 +412,9 @@ app.get("/invoice", function (request, response) {
                 </div>
             </div>
         </div>
-
-    </div>
     <!-- End of the invoie function. For the invoice print function. -->`
 
-    // Set up mail server. Only will work on UH Network due to security restrictions
+    // Set up mail server. Using custom credentials
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         host: 'smtp.gmail.com',
@@ -422,9 +424,9 @@ app.get("/invoice", function (request, response) {
         }
       });
 
-   
+    
     var mailOptions = {
-        from: 'knsunaha@hawaii.edu',
+        from: 'shopfurniture6@gmail.com',
         to: request.query.email,
         subject: 'Your Furniture Shop Invoice',
         html: invoice_str
@@ -440,7 +442,9 @@ app.get("/invoice", function (request, response) {
         alert("${invoicemessage}")
         window.location = "./login"
         </script>`)
+        request.session.destroy()
     });
+    //loads values so that it can be used in the invoice. Since an empty array was created earlier. it will load these variables their
     invoicevalues = {
         email: request.query.email,
         cardname : request.query.cardname,
@@ -501,27 +505,27 @@ function validatefullname(fullname) {
     const re = /^[ +a-zA-Z]{0,30}$/
     return re.test(String(fullname));
 }
-function checkcvv(cvv) {//used =@ and +\. to seperate sections of email
-    const re = /^[0-9]{2,3}$/;
+function checkcvv(cvv) {//numbers that have to be 3 characters long
+    const re = /^[0-9]{3}$/;
     return re.test(String(cvv));
 }
-function cardnumber(cardnumber) {//used =@ and +\. to seperate sections of email
+function cardnumber(cardnumber) {//numbers and can only be 16 characters long
     const re = /^[0-9]{16}$/;
     return re.test(String(cardnumber));
 }
-function statecheck(state) {//used =@ and +\. to seperate sections of email
+function statecheck(state) {//upper or lowercause values that are 2 charactesr long
     const re = /^[a-zA-Z]{2}$/;
     return re.test(String(state));
 }
-function zipcodecheck(zip) {//used =@ and +\. to seperate sections of email
+function zipcodecheck(zip) {//numbers that can only be 5 charactesr long
     const re = /^[0-9]{5}$/;
     return re.test(String(zip));
 }
-function expmonthcheck(month) {//used =@ and +\. to seperate sections of email
-    const re = /^[1-9][0-2]{0,2}$/;
+function expmonthcheck(month) {//can only be between 1-12 and be between 1 and 2 characters
+    const re = /^[1-9][0-2]{1,2}$/;
     return re.test(String(month));
 }
-function expyearcheck(year) {//used =@ and +\. to seperate sections of email
+function expyearcheck(year) {//start with 20 and only contain two other digits after that
     const re = /^(20)\d{2}$/;
     return re.test(String(year));
 }

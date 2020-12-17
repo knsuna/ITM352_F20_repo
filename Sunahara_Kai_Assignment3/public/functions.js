@@ -1,4 +1,5 @@
 // This function asks the server for a "service" and converts the response to text. 
+//taken from assingment 3 example
 function loadJSON(service, callback) {
   var xobj = new XMLHttpRequest();
   xobj.overrideMimeType("application/json");
@@ -12,7 +13,7 @@ function loadJSON(service, callback) {
   xobj.send(null);
 }
 
-// This function makes a navigation bar from a products_data object
+// This function makes a navigation bar from a products_data object. taken from Assingment 3 example
 
 function nav_bar(this_product_key, products_data) {
   // This makes a navigation bar to other product pages
@@ -23,7 +24,7 @@ function nav_bar(this_product_key, products_data) {
         `);
   }
 }
-
+//taken from assingment 3 example
 function getCookie(cname) {
   var name = cname + "=";
   var decodedCookie = decodeURIComponent(document.cookie);
