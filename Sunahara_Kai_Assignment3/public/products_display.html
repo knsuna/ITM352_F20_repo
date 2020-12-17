@@ -67,6 +67,7 @@ Template from ww3 schools
                             <button class="dropbtn">Products</button>
                             <div class="dropdown-content">
                                 <script>
+                                    //displays navbar function from function.ks
                                     nav_bar(this_product_key, products_data)
 
                                 </script>
@@ -77,12 +78,13 @@ Template from ww3 schools
                 <ul class="nav navbar-nav navbar-right">
                     <li>
                         <script>
+                            //renders cart information
                             document.write(`<a href="./cart.html"><i class="fa badge" style="font-size:24px;margin-bottom:-10%" value="${total}">&#xf07a;</i></a>`)
                            
                         </script>
                     </li>
                     <li>
-                        <script>
+                        <script>//checks if there is a cookie. will display informatoin accordingly
                             var username = getCookie(`username`);
                             if (username == "") {
                                 document.write(`
@@ -117,7 +119,7 @@ Template from ww3 schools
                         <main>
 
                             <script>
-
+                                //displays product informaiton depending on which page they are on
                                 var order_str = '';
 
                                 order_str += `
@@ -152,6 +154,7 @@ Template from ww3 schools
                     <main>
                         <h2>
                             <script>
+                                //personalized cart notification
                                 if (username != ""){
                                     document.write(`Here is your Quick Cart, ${user_reg_data[username].name}`)
                                 }
@@ -164,7 +167,7 @@ Template from ww3 schools
                             Loads all of your cart information here!
                         </h3>
                         <script>
-
+                            //displays cart information in more detail. However, if they want to modifty the cart, they can look in the extended cart. Used Amazon as a rough idea.
                             for (products_key in shopping_cart) {
                                 for (i = 0; i < products_data[products_key].length; i++) {
                                     if (shopping_cart[products_key][i] != undefined && shopping_cart[products_key][i] != 0) {

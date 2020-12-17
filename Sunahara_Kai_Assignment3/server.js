@@ -107,10 +107,9 @@ app.post("/loginform", function (request, response) {
 });
 
 
-//The GET /register is taken from register.view
+//The GET /register is taken from register.html
 app.get("/register", function (request, response) {
-    var contents = fs.readFileSync('./public/register.view', 'utf8');
-    response.send(eval('`' + contents + '`')); // render template string
+    response.redirect(`./register.html`); // render template string
 });
 //When the POST /register is recieved it will begin the process to register new account
 app.post("/register", function (request, response) {

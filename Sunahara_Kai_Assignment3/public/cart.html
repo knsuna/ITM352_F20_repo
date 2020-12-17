@@ -151,7 +151,7 @@ Cart page
             </div>
             <script>
                 //if there is items in the cart, I will diplay an option to check or purchase
-                if(payform != "true"){
+                if(payform == true){
                     document.write(`
             <form action="./checkout" name="checkout" method="get">
                 <input type="submit" value="Pay for Products!">
