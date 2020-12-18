@@ -121,6 +121,10 @@ Index page/Home page of website
                     view your invoice!</p>
             </div>
             <div class="col-sm-2 sidenav">
+                <h2>
+                Quick Cart
+                </h2>
+                <h2>
                 <script>
                     //personalized to let individual know if they are logged in or not
                     if (username != ""){
@@ -130,12 +134,14 @@ Index page/Home page of website
                         document.write(``)
                     }
                 </script> 
+                </h2>
                 <script>
                     //displays cart. Same code as from products_data.html
                     for (products_key in shopping_cart) {
                         for (i = 0; i < products_data[products_key].length; i++) {
                             if (shopping_cart[products_key][i] != undefined && shopping_cart[products_key][i] != 0) {
                                 document.write(`
+                                <br>
                                     <span>${products_data[products_key][i].Type}</span>
                                     <div id="quantitiesvalue">
                                     <INPUT TYPE="number" min=0 value="${shopping_cart[products_key][i]}" readonly>
@@ -148,14 +154,16 @@ Index page/Home page of website
                     }
                     //displays more cart information if the there are cart values
                     if (cart_values) {
-                        document.write(`
-                        <form action="./checkout" name="checkout" method="get">
-                            <input type="submit" value="Pay for Products!"> 
-                        </form>
-                        <form action="./cart.html" name="cart" method="get">
-                            <input type="submit" value="View Extended Cart"> 
-                        </form>
-                        `)
+                                document.write(`
+                                <h3>Don't like your cart? Click below to modify all your cart values!</h3>
+                                <form action="./cart.html" name="cart" method="get">
+                                    <input type="submit" value="Modify Cart!"> 
+                                </form>
+                                <h3>Want to skip the hassle of checking your cart? Click below to pay for your products now!!</h3>
+                                <form action="./checkout" name="checkout" method="get">
+                                    <input type="submit" value="Pay for Products!"> 
+                                </form>
+                                `)
                     }
                     else {
                         document.write(`

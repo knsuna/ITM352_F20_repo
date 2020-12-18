@@ -86,7 +86,7 @@ app.post("/loginform", function (request, response) {
         if ((user_reg_data[username].password == request.body.password) == true) {
             console.log(username + ' logged in');
             fullname = user_reg_data[username].name;
-            response.cookie(`username`, username);
+            response.cookie(`username`, username, {maxAge: 300000});
             response.redirect(`./index.html`)
         } else {
             response.send(`<script>
@@ -202,12 +202,11 @@ app.post("/register", function (request, response) {
         user_reg_data[username].name = request.body.fullname; //Assigns full name to new object
         user_reg_data[username].password = request.body.password; //Assigns password to new object
         user_reg_data[username].email = request.body.email.toLowerCase(); //Assigns email to new object
+        response.cookie(`username`, username, {maxAge: 300000});
 
         fs.writeFileSync(user_data_filename, JSON.stringify(user_reg_data)); //This will turn ___ into a string
 
-        var contents = fs.readFileSync('./public/invoice.view', 'utf8');//So that the display_invoice_table_rows will be rendered with invoice.view
-        response.send(eval('`' + contents + '`')); // render template string
-
+        response.redirect(`./index.html`)
     }
 
 });
@@ -460,6 +459,7 @@ app.get("/invoice", function (request, response) {
 //The GET request is from the login.html page. Whenver /login is used, they will be sent to login.html
 app.get("/login", function (request, response) {
     username = request.cookies.username
+    response.cookie(`username`, username, {maxAge: 300000});
     //console.log(request.cookies.username)
     if (typeof user_reg_data[username] != `undefined`) {
         fullname = user_reg_data[username].name;

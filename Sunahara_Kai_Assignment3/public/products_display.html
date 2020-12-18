@@ -184,11 +184,13 @@ Template from ww3 schools
                             }
                             if (cart_values) {
                                 document.write(`
+                                <h3>Don't like your cart? Click below to modify all your cart values!</h3>
+                                <form action="./cart.html" name="cart" method="get">
+                                    <input type="submit" value="Modify Cart!"> 
+                                </form>
+                                <h3>Want to skip the hassle of checking your cart? Click below to pay for your products now!!</h3>
                                 <form action="./checkout" name="checkout" method="get">
                                     <input type="submit" value="Pay for Products!"> 
-                                </form>
-                                <form action="./cart.html" name="cart" method="get">
-                                    <input type="submit" value="View Extended Cart"> 
                                 </form>
                                 `)
                             }
@@ -198,11 +200,10 @@ Template from ww3 schools
                                 `)
                             }
                         </script>
+                        
                     </main>
 
                 </div>
-
-                </main>
 
             </div>
 
