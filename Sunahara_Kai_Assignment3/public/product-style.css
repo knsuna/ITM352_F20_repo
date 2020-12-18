@@ -138,3 +138,10 @@
     opacity:0.9;
 
     }
+    iframe:focus {
+        outline: none;
+      }
+      
+      iframe[seamless] {
+        display: block;
+      }

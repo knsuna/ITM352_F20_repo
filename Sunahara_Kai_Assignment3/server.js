@@ -37,6 +37,8 @@ app.post("/user_data", function (request, response) {
 app.get("/add_to_cart", function (request, response) {
     var products_key = request.query['products_key']; // get the product key sent from the form post
     var quantities = request.query['quantities'].map(Number); // Get quantities from the form post and convert strings from form post to numbers
+    console.log(request.query)
+    console.log(quantities)
     for (i in quantities) {
         if (isNonNegInt(quantities[i])) {
             request.session.cart[products_key] = quantities; // store the quantities array in the session cart object with the same products_key. 
@@ -44,6 +46,28 @@ app.get("/add_to_cart", function (request, response) {
             alert("${quantities.reduce((a, b) => a + b, 0)} items from this page are in the cart"); 
             window.history.back(); 
             
+            </script>`);
+        } else {
+            return response.send(`<script>
+            alert("You have entered an Invalid Quantity"); 
+            window.history.back(); 
+            
+            </script>`);
+        }
+
+    }
+});
+
+//adds the specified quantity, saves it, and displays infroamtion regarding how much was put in the cart
+app.get("/modifyincart", function (request, response) {
+    var products_key = request.query['products_key']; // get the product key sent from the form post
+    var quantities = request.query['quantities'].map(Number); // Get quantities from the form post and convert strings from form post to numbers
+    for (i in quantities) {
+        if (isNonNegInt(quantities[i])) {
+            request.session.cart[products_key] = quantities; // store the quantities array in the session cart object with the same products_key. 
+            return response.send(`<script>
+            alert("${quantities.reduce((a, b) => a + b, 0)} items from this page are in the cart"); 
+            window.top.location.reload();          
             </script>`);
         } else {
             return response.send(`<script>

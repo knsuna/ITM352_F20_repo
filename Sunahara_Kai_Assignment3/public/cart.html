@@ -118,36 +118,34 @@ Cart page
                 </p>
             </div>
             <div class="col-sm-8 text-left">
-
+              
                 <script>
                     //displays the products within the shopping cart. Since it only dispalys the items in the shopping cart, I do not need to worry about any other products being in here
                     var order_str = '';
 
 
                     for (products_key in shopping_cart) {
-
+                        order_str +=` <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="${products_key}">`
                         for (i = 0; i < products_data[products_key].length; i++) {
                             if (shopping_cart[products_key][i] != undefined && shopping_cart[products_key][i] != 0) {
                                 var payform = true;
-                                var extendedprice = products_data[products_key][i]['Price'] * shopping_cart[products_key][i];
-                                order_str += `
-     <form action="./add_to_cart" name="products_key" method="get">
-         <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="${products_key}">
- <h2>${products_data[products_key][i]["Type"]}</h2>
- <p> At ${products_data[products_key][i]['Price']} each, ${shopping_cart[products_key][i]} will cost you ${extendedprice.toFixed(2)}</p>
- <INPUT TYPE="text" name="quantities[${i}]" value="${shopping_cart[products_key][i]}">
- <input type="submit" value="Confirm the Quantity of ${products_data[products_key][i]["Type"]} Changes to Cart!">
- </form>
- `;
                             }
 
+                        }
+                        if(payform == true){
+                            order_str += `
+                            <div style="content">
+                            <iframe src="./cart_display.html?products_key=${products_key}" width="100%" height="600px">
+                            </iframe>
+                            </div>
+                            `;
                         }
                     }
                     // this closes the else for the form and table display
                     document.write(order_str);
 
                 </script>
-
+               
             </div>
             <script>
                 //if there is items in the cart, I will diplay an option to check or purchase

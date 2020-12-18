@@ -1,0 +1,94 @@
+<!-- 
+By: Kai Sunahara
+Products Dispaly webpage
+Template from ww3 schools
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Furniture Products</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="./functions.js"></script>
+    <script>
+        // get the query string
+        var products_data;
+        var total = 0;
+        loadJSON('get_products_data', function (response) {
+            // Parsing JSON string into object
+            products_data = JSON.parse(response);
+        });
+        loadJSON('get_cart', function (response) {
+            // Parsing JSON string into object
+            shopping_cart = JSON.parse(response);
+            cart = response
+            for (pk in shopping_cart) {
+                total += shopping_cart[pk].reduce((a, b) => a + b);
+            }
+        });
+
+        // get the query string
+        let params = (new URL(document.location)).searchParams;
+        if (params.has('products_key')) {
+            var this_product_key = params.get('products_key');
+        } else {
+            window.location.href = `./index.html`;
+        }
+    </script>
+    <link rel="stylesheet" href="product-style.css">
+</head>
+
+<body>
+
+    <form action="./modifyincart" name="products_key" method="get">
+
+        <div>
+            <!-- Submit Button with sidebar id for CSS -->
+            
+         
+
+                <script>
+                    //displays product informaiton depending on which page they are on
+                    var order_str = '';
+
+                    order_str += `
+            <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="${this_product_key}">
+                <input type="submit" class="button" value="Modify your ${this_product_key}">
+                `;
+
+                    products = products_data[this_product_key];
+
+                    for (i = 0; i < products.length; i++) {
+                        var extendedprice = products[i]['Price'] * shopping_cart[this_product_key][i];
+                        if (shopping_cart[this_product_key][i] != 0 && shopping_cart[this_product_key][i] != undefined) {
+                            order_str += `
+        
+        <h2>${products[i]["Type"]}</h2> 
+        <p>${shopping_cart[this_product_key][i]} will cost you ${extendedprice.toFixed(2)}</p>
+        <p>${products[i]['Price']}</p>
+       
+        <label id="quantity${i}_label"}">Quantity</label>
+        <INPUT TYPE="text" placeholder="0" name="quantities[${i}]" value="${shopping_cart[this_product_key][i]}"></input>
+         
+                `;
+                        }
+
+
+                    }
+                    // this closes the else for the form and table display
+                    document.write(order_str);
+
+                </script>
+
+        
+        </div>
+    </form>
+
+</body>
+
+</html>
