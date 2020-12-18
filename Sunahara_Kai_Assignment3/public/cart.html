@@ -118,19 +118,19 @@ Cart page
                 </p>
             </div>
             <div class="col-sm-8 text-left">
-              
+              <h1>Modify your Cart Quantities here!</h1>
                 <script>
                     //displays the products within the shopping cart. Since it only dispalys the items in the shopping cart, I do not need to worry about any other products being in here
                     var order_str = '';
 
-
+                   
                     for (products_key in shopping_cart) {
-                        order_str +=` <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="${products_key}">`
+                        order_str +=` <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="${products_key}">`;
+                            var payform = false;
                         for (i = 0; i < products_data[products_key].length; i++) {
                             if (shopping_cart[products_key][i] != undefined && shopping_cart[products_key][i] != 0) {
                                 var payform = true;
                             }
-
                         }
                         if(payform == true){
                             order_str += `

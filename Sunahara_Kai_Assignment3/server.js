@@ -58,7 +58,7 @@ app.get("/add_to_cart", function (request, response) {
     }
 });
 
-//adds the specified quantity, saves it, and displays infroamtion regarding how much was put in the cart
+//specific for when users want to modify products in cart
 app.get("/modifyincart", function (request, response) {
     var products_key = request.query['products_key']; // get the product key sent from the form post
     var quantities = request.query['quantities'].map(Number); // Get quantities from the form post and convert strings from form post to numbers
